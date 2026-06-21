@@ -1,6 +1,8 @@
 {
   "source": "https://defyprs.com/images/",
+  "location": "src/assets/images/",
   "migratedAt": "2026-06-21",
+  "optimized": "Astro Image pipeline (WebP srcset at build time)",
   "notes": {
     "dr-john-apostolides-716.jpg": "404 on live site — use dr-a-629.jpg as substitute for Dr. John profile imagery",
     "meet-team-banner.jpg": "Downloaded for completeness; meet-defy team page is out of scope",

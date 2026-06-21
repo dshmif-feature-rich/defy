@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import SubBanner from '../components/SubBanner.astro';
 import ExpertiseContent from '../components/ExpertiseContent.astro';
 import aging from '../content/pages/aging.json';
+import { getImage, getImages } from '../lib/images';
 
 const breadcrumbs = [
   { label: 'Home', href: '/' },
@@ -12,11 +13,15 @@ const breadcrumbs = [
 ---
 
 <BaseLayout title="Aging" description={aging.description} currentPath="/aging">
-  <SubBanner title={aging.bannerTitle} image={aging.banner} breadcrumbs={breadcrumbs} />
+  <SubBanner
+    title={aging.bannerTitle}
+    image={getImage(aging.banner)}
+    breadcrumbs={breadcrumbs}
+  />
   <ExpertiseContent
     sectionTitleAccent={aging.sectionTitleAccent}
     sectionTitle={aging.sectionTitle}
     paragraphs={aging.paragraphs}
-    carousel={aging.carousel}
+    carousel={getImages(aging.carousel)}
   />
 </BaseLayout>

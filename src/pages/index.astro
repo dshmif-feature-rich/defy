@@ -3,9 +3,15 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/Hero.astro';
 import SpecialistSection from '../components/SpecialistSection.astro';
 import home from '../content/pages/home.json';
+import { site } from '../config/site';
 ---
 
-<BaseLayout title="Home" description={home.description} currentPath="/">
+<BaseLayout
+  title="Home"
+  description={home.description}
+  currentPath="/"
+  ogImage={`${site.url}/og-image.png`}
+>
   <Hero />
 
   <section class="py-16 sm:py-20">

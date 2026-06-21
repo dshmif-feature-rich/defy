@@ -1,11 +1,14 @@
 ---
+import { Image } from 'astro:assets';
 import { navItems } from '../config/site';
+import { getImage } from '../lib/images';
 
 interface Props {
   currentPath: string;
 }
 
 const { currentPath } = Astro.props;
+const logo = getImage('defy-logo.png');
 
 function isActive(href: string): boolean {
   if (href === '/') return currentPath === '/';
@@ -16,16 +19,16 @@ function isActive(href: string): boolean {
 <header class="sticky top-0 z-50 bg-white shadow-sm">
   <div class="container-defy flex items-center justify-between py-4">
     <a href="/" class="shrink-0">
-      <img
-        src="/images/defy-logo.png"
+      <Image
+        src={logo}
         alt="DEFY Plastic and Reconstructive Surgery"
         class="h-12 w-auto sm:h-14"
-        width="200"
-        height="71"
+        widths={[200, 350]}
+        sizes="200px"
+        loading="eager"
       />
     </a>
 
-    <!-- Desktop nav -->
     <nav class="hidden lg:block" aria-label="Main navigation">
       <ul class="flex items-stretch bg-defy-charcoal">
         {
@@ -75,7 +78,6 @@ function isActive(href: string): boolean {
       </ul>
     </nav>
 
-    <!-- Mobile menu toggle -->
     <button
       type="button"
       id="mobile-menu-btn"
@@ -89,7 +91,6 @@ function isActive(href: string): boolean {
     </button>
   </div>
 
-  <!-- Mobile nav -->
   <nav
     id="mobile-menu"
     class="hidden border-t border-defy-warm bg-defy-charcoal lg:hidden"

@@ -1,15 +1,20 @@
 ---
+import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SubBanner from '../components/SubBanner.astro';
 import SectionTitle from '../components/SectionTitle.astro';
 import SpecialistSection from '../components/SpecialistSection.astro';
 import about from '../content/pages/about-us.json';
+import { getImage } from '../lib/images';
+
+const bannerImage = getImage(about.banner);
+const aboutPhoto = getImage('defy-woman-tmp.jpg');
 ---
 
 <BaseLayout title="About Us" description={about.description} currentPath="/about-us">
   <SubBanner
     title="About Us"
-    image={about.banner}
+    image={bannerImage}
     breadcrumbs={[
       { label: 'Home', href: '/' },
       { label: 'About Us' },
@@ -26,12 +31,12 @@ import about from '../content/pages/about-us.json';
 
       <div class="grid items-start gap-10 lg:grid-cols-5 lg:gap-14">
         <div class="lg:col-span-2">
-          <img
-            src="/images/defy-woman-tmp.jpg"
+          <Image
+            src={aboutPhoto}
             alt="DEFY aesthetic surgery practice"
             class="w-full object-cover shadow-lg"
-            width={500}
-            height={650}
+            widths={[400, 500, 600]}
+            sizes="(max-width: 1024px) 100vw, 40vw"
             loading="lazy"
           />
         </div>

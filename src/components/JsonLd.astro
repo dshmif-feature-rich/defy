@@ -1,0 +1,45 @@
+---
+import { site } from '../config/site';
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'MedicalBusiness',
+  name: 'DEFY Plastic and Reconstructive Surgery',
+  alternateName: site.name,
+  url: site.url,
+  telephone: site.phoneTel,
+  email: site.email,
+  faxNumber: site.fax,
+  image: `${site.url}/og-image.png`,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: '1322 Scott Street Suite 102',
+    addressLocality: 'San Diego',
+    addressRegion: 'CA',
+    postalCode: '92106',
+    addressCountry: 'US',
+  },
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: 32.723712,
+    longitude: -117.23095,
+  },
+  openingHoursSpecification: [
+    {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+      opens: '09:00',
+      closes: '17:00',
+    },
+  ],
+  medicalSpecialty: 'PlasticSurgery',
+  employee: {
+    '@type': 'Physician',
+    name: 'John G. Apostolides',
+    honorificSuffix: 'MD, FACS',
+    medicalSpecialty: 'Plastic Surgery',
+  },
+};
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(schema)} />

@@ -1,13 +1,18 @@
 ---
+import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SubBanner from '../components/SubBanner.astro';
 import meetJohn from '../content/pages/meet-john.json';
+import { getImage } from '../lib/images';
+
+const bannerImage = getImage(meetJohn.banner);
+const profilePhoto = getImage('dr-a-629.jpg');
 ---
 
 <BaseLayout title="Meet John" description={meetJohn.description} currentPath="/meet-john">
   <SubBanner
     title="Meet John"
-    image={meetJohn.banner}
+    image={bannerImage}
     breadcrumbs={meetJohn.breadcrumbs}
   />
 
@@ -15,12 +20,12 @@ import meetJohn from '../content/pages/meet-john.json';
     <div class="container-defy">
       <div class="mx-auto grid max-w-5xl gap-10 lg:grid-cols-2 lg:items-start">
         <div class="overflow-hidden">
-          <img
-            src="/images/dr-a-629.jpg"
+          <Image
+            src={profilePhoto}
             alt="Dr. John Apostolides"
             class="w-full object-cover"
-            width={600}
-            height={750}
+            widths={[400, 600, 800]}
+            sizes="(max-width: 1024px) 100vw, 50vw"
             loading="lazy"
           />
         </div>

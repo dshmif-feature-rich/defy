@@ -1,0 +1,56 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SubBanner from '../components/SubBanner.astro';
+import MapEmbed from '../components/MapEmbed.astro';
+import contact from '../content/pages/contact-us.json';
+import { site } from '../config/site';
+import { getImage } from '../lib/images';
+
+const bannerImage = getImage(contact.banner);
+---
+
+<BaseLayout
+  title="Contact Us"
+  description={contact.description}
+  currentPath="/contact-us"
+>
+  <SubBanner
+    title={contact.bannerTitle}
+    image={bannerImage}
+    breadcrumbs={[
+      { label: 'Home', href: '/' },
+      { label: contact.bannerTitle },
+    ]}
+  />
+
+  <section class="py-16 sm:py-20">
+    <div class="container-defy">
+      <MapEmbed />
+
+      <div class="mx-auto mt-12 max-w-xl space-y-4 text-center sm:mt-16">
+        <h2 class="font-serif text-2xl text-defy-rose">Get In Touch</h2>
+        <p class="text-defy-charcoal/80">{site.address}</p>
+        <ul class="space-y-2 text-sm text-defy-charcoal/90">
+          <li>
+            <a
+              href={`tel:${site.phoneTel}`}
+              class="transition-colors hover:text-defy-rose"
+            >
+              {site.phone}
+            </a>
+          </li>
+          <li>Fax: {site.fax}</li>
+          <li>
+            <a
+              href={`mailto:${site.email}`}
+              class="transition-colors hover:text-defy-rose"
+            >
+              {site.email}
+            </a>
+          </li>
+          <li>{site.hours}</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

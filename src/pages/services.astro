@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import SubBanner from '../components/SubBanner.astro';
 import ServicesAccordion from '../components/ServicesAccordion.astro';
 import servicesPage from '../content/pages/services.json';
+import { getImage } from '../lib/images';
 
 const breadcrumbs = [
   { label: 'Home', href: '/' },
@@ -17,7 +18,7 @@ const breadcrumbs = [
 >
   <SubBanner
     title={servicesPage.bannerTitle}
-    image={servicesPage.banner}
+    image={getImage(servicesPage.banner)}
     breadcrumbs={breadcrumbs}
   />
 

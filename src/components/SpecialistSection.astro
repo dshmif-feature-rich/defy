@@ -1,5 +1,7 @@
 ---
+import { Image } from 'astro:assets';
 import SectionTitle from './SectionTitle.astro';
+import { getImage } from '../lib/images';
 
 interface Props {
   titleAccent: string;
@@ -22,6 +24,8 @@ const {
   profileHref,
   image = 'dr-a-629.jpg',
 } = Astro.props;
+
+const photo = getImage(image);
 ---
 
 <section class="bg-white py-16 sm:py-20">
@@ -30,12 +34,12 @@ const {
 
     <div class="mx-auto grid max-w-5xl gap-10 lg:grid-cols-2 lg:items-center">
       <div class="group relative overflow-hidden">
-        <img
-          src={`/images/${image}`}
+        <Image
+          src={photo}
           alt={name}
           class="w-full object-cover transition-transform duration-700 group-hover:scale-105"
-          width={600}
-          height={750}
+          widths={[400, 600, 800]}
+          sizes="(max-width: 1024px) 100vw, 50vw"
           loading="lazy"
         />
         <div class="absolute inset-0 bg-defy-rose-overlay/0 transition-colors duration-500 group-hover:bg-defy-rose-overlay/30"></div>

@@ -1,0 +1,17 @@
+---
+import { site } from '../config/site';
+
+const embedUrl =
+  'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3356.582801273437!2d-117.23095008481931!3d32.723712080988136!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80deaba3a2abd1a9%3A0x59e1ea5a0daeb826!2sJohn+G.+Apostolides%2C+MD%2C+Inc.+dba+DEFY!5e0!3m2!1sen!2sus!4v1486759498909';
+---
+
+<div class="overflow-hidden rounded-sm shadow-lg">
+  <iframe
+    src={embedUrl}
+    title={`Map showing ${site.name} location`}
+    class="aspect-[16/9] w-full border-0 sm:aspect-[21/9]"
+    loading="lazy"
+    referrerpolicy="no-referrer-when-downgrade"
+    allowfullscreen
+  ></iframe>
+</div>

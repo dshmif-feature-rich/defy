@@ -1,4 +1,7 @@
 ---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
 export interface Breadcrumb {
   label: string;
   href?: string;
@@ -6,7 +9,7 @@ export interface Breadcrumb {
 
 interface Props {
   title: string;
-  image: string;
+  image: ImageMetadata;
   breadcrumbs: Breadcrumb[];
 }
 
@@ -14,10 +17,12 @@ const { title, image, breadcrumbs } = Astro.props;
 ---
 
 <section class="relative flex min-h-[280px] items-end overflow-hidden bg-defy-dark sm:min-h-[340px]">
-  <img
-    src={`/images/${image}`}
+  <Image
+    src={image}
     alt=""
     class="absolute inset-0 h-full w-full object-cover"
+    widths={[640, 960, 1280]}
+    sizes="100vw"
     loading="eager"
   />
   <div class="absolute inset-0 bg-defy-rose-overlay/60 mix-blend-multiply"></div>
