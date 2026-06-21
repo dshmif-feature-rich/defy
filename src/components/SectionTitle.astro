@@ -1,0 +1,21 @@
+---
+interface Props {
+  accent: string;
+  title: string;
+  subtitle?: string;
+  align?: 'center' | 'left';
+}
+
+const { accent, title, subtitle, align = 'center' } = Astro.props;
+---
+
+<div class:list={['mb-10', align === 'center' && 'text-center']}>
+  <h2 class="section-title">
+    <span>{accent}</span> {title}
+  </h2>
+  {subtitle && (
+    <p class="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-defy-charcoal/80 sm:text-lg">
+      {subtitle}
+    </p>
+  )}
+</div>

@@ -1,0 +1,59 @@
+---
+import SectionTitle from './SectionTitle.astro';
+
+interface Props {
+  titleAccent: string;
+  title: string;
+  subtitle: string;
+  name: string;
+  role: string;
+  bio: string;
+  profileHref: string;
+  image?: string;
+}
+
+const {
+  titleAccent,
+  title,
+  subtitle,
+  name,
+  role,
+  bio,
+  profileHref,
+  image = 'dr-a-629.jpg',
+} = Astro.props;
+---
+
+<section class="bg-white py-16 sm:py-20">
+  <div class="container-defy">
+    <SectionTitle accent={titleAccent} title={title} subtitle={subtitle} />
+
+    <div class="mx-auto grid max-w-5xl gap-10 lg:grid-cols-2 lg:items-center">
+      <div class="group relative overflow-hidden">
+        <img
+          src={`/images/${image}`}
+          alt={name}
+          class="w-full object-cover transition-transform duration-700 group-hover:scale-105"
+          width={600}
+          height={750}
+          loading="lazy"
+        />
+        <div class="absolute inset-0 bg-defy-rose-overlay/0 transition-colors duration-500 group-hover:bg-defy-rose-overlay/30"></div>
+      </div>
+
+      <div>
+        <h3 class="font-serif text-2xl text-defy-rose">{name}</h3>
+        <p class="mt-1 text-sm font-medium tracking-wide text-defy-charcoal/70 uppercase">
+          {role}
+        </p>
+        <p class="mt-5 leading-relaxed text-defy-charcoal/90">{bio}</p>
+        <a
+          href={profileHref}
+          class="mt-6 inline-block text-sm font-medium tracking-wide text-defy-rose transition-colors hover:text-defy-charcoal"
+        >
+          — View Profile
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,16 @@
+{
+  "description": "DEFY is San Diego's premier plastic, reconstructive, and aesthetic surgery practice led by Johns Hopkins trained surgeon Dr. John G. Apostolides, MD, FACS.",
+  "intro": [
+    "DEFY is San Diego's premier plastic, reconstructive, and aesthetic surgery practice. Our founder, John G. Apostolides, MD, FACS is a Johns Hopkins trained, board certified plastic & reconstructive surgeon whose extensive training, elite education and experience ranks him among the top single percent of surgeons in his field.",
+    "Our entire office is dedicated to providing the most advanced and highest quality patient care. We strive to DEFY the standard, lackluster experience that so many patients encounter in the healthcare industry. We strive for genuine relationships with our patients. Visit us and feel the difference at DEFY."
+  ],
+  "specialist": {
+    "titleAccent": "Meet Our",
+    "title": "Specialist",
+    "subtitle": "Representing over 15 years of the most superior and innovative aesthetic and reconstructive procedures, the DEFY team has quickly become Southern California's leaders in Plastic Surgery.",
+    "name": "John Apostolides MD, FACS",
+    "role": "Board Certified Plastic, Reconstructive and Aesthetic Surgeon",
+    "bio": "A graduate of Georgetown University, John G. Apostolides, M.D., received his medical degree from the University of Maryland School of Medicine. Following medical school, Dr. Apostolides was selected for one of only two positions to train in plastic, reconstructive, cosmetic and maxillofacial surgery at Johns Hopkins Hospital, the top rated hospital in the country for 21 years.",
+    "profileHref": "/meet-john"
+  }
+}

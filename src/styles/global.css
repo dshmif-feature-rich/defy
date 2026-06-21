@@ -53,4 +53,17 @@
   .nav-link-active {
     @apply bg-defy-rose text-white;
   }
+
+  .hero-ken-burns {
+    animation: ken-burns 20s ease-in-out infinite alternate;
+  }
+}
+
+@keyframes ken-burns {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.06);
+  }
 }

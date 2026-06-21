@@ -1,0 +1,23 @@
+{
+  "description": "Learn how DEFY brings a refreshing, patient-centered approach to plastic surgery in San Diego's La Playa/Point Loma neighborhood.",
+  "banner": "about-banner.jpg",
+  "welcome": {
+    "titleAccent": "Welcome to",
+    "title": "DEFY",
+    "lead": "DEFY was founded by Johns Hopkins trained Plastic & Reconstructive Surgeon Dr. John G. Apostolides, to serve the San Diego community with an entirely new and refreshing approach to plastic surgery.",
+    "paragraphs": [
+      "After completing his extensive training on the East Coast, he moved to San Diego with his family only to discover that the greater San Diego region was saturated with plastic surgeons, yet still desperately lacked the cutting-edge techniques and advanced procedures he was providing patients at Johns Hopkins Hospital. When Dr. A started working with patients in San Diego, word quickly spread. Patients began referring friends, those friends sent their friends, and so on… and the quality of his work became widely known.",
+      "Additionally, breast cancer patients come seeking our cutting edge reconstructive surgical techniques that are so hard to find offered elsewhere in the region. In short, his work spoke for itself and his reputation became synonymous with the regional expert in many of the most complex, gratifying and advanced techniques that are medically available.",
+      "Dr. Apostolides created DEFY so his patients could experience an individual, customized approach to beauty and wellness. Centrally located in the beautiful, private and highly exclusive neighborhood of La Playa/Point Loma, DEFY provides the greater San Diego region with a multidisciplinary approach unlike any other practice. Our office is designed with the patient's needs at the forefront. It is private, peaceful, and focused on trust and relaxation. Visit us and experience the difference."
+    ]
+  },
+  "specialist": {
+    "titleAccent": "Meet Our",
+    "title": "Specialist",
+    "subtitle": "Representing over 15 years of the most superior and innovative aesthetic and reconstructive procedures, the DEFY team has quickly become Southern California's leaders in Plastic Surgery.",
+    "name": "John Apostolides MD, FACS",
+    "role": "Board Certified Plastic, Reconstructive and Aesthetic Surgeon",
+    "bio": "A graduate of Georgetown University, John G. Apostolides, M.D., received his medical degree from the University of Maryland School of Medicine. Following medical school, Dr. Apostolides was selected for one of only two positions to train in plastic, reconstructive, cosmetic and maxillofacial surgery at Johns Hopkins Hospital, the top rated hospital in the country for 21 years.",
+    "profileHref": "/meet-john"
+  }
+}

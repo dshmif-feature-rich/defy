@@ -1,0 +1,19 @@
+---
+interface Props {
+  image?: string;
+}
+
+const { image = 'defy-woman-bg.png' } = Astro.props;
+---
+
+<section class="relative flex min-h-[85vh] items-end overflow-hidden bg-defy-dark">
+  <div
+    class="hero-ken-burns absolute inset-0 bg-cover bg-center bg-no-repeat"
+    style={`background-image: url('/images/${image}');`}
+    role="img"
+    aria-label="DEFY plastic and reconstructive surgery"
+  >
+  </div>
+  <div class="absolute inset-0 bg-gradient-to-t from-defy-dark/75 via-defy-dark/20 to-defy-dark/10"></div>
+  <div class="absolute inset-0 bg-defy-rose-overlay/20"></div>
+</section>

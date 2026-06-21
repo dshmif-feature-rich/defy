@@ -1,0 +1,44 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SubBanner from '../components/SubBanner.astro';
+import meetJohn from '../content/pages/meet-john.json';
+---
+
+<BaseLayout title="Meet John" description={meetJohn.description} currentPath="/meet-john">
+  <SubBanner
+    title="Meet John"
+    image={meetJohn.banner}
+    breadcrumbs={meetJohn.breadcrumbs}
+  />
+
+  <section class="py-16 sm:py-20">
+    <div class="container-defy">
+      <div class="mx-auto grid max-w-5xl gap-10 lg:grid-cols-2 lg:items-start">
+        <div class="overflow-hidden">
+          <img
+            src="/images/dr-a-629.jpg"
+            alt="Dr. John Apostolides"
+            class="w-full object-cover"
+            width={600}
+            height={750}
+            loading="lazy"
+          />
+        </div>
+
+        <div>
+          <h2 class="font-serif text-3xl text-defy-rose">{meetJohn.name}</h2>
+          <p class="mt-2 text-sm font-medium tracking-wide text-defy-charcoal/70 uppercase">
+            {meetJohn.role}
+          </p>
+          <div class="mt-6 space-y-6">
+            {
+              meetJohn.paragraphs.map((paragraph) => (
+                <p class="leading-relaxed text-defy-charcoal/90">{paragraph}</p>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

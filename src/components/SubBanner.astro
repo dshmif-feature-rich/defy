@@ -1,0 +1,47 @@
+---
+export interface Breadcrumb {
+  label: string;
+  href?: string;
+}
+
+interface Props {
+  title: string;
+  image: string;
+  breadcrumbs: Breadcrumb[];
+}
+
+const { title, image, breadcrumbs } = Astro.props;
+---
+
+<section class="relative flex min-h-[280px] items-end overflow-hidden bg-defy-dark sm:min-h-[340px]">
+  <img
+    src={`/images/${image}`}
+    alt=""
+    class="absolute inset-0 h-full w-full object-cover"
+    loading="eager"
+  />
+  <div class="absolute inset-0 bg-defy-rose-overlay/60 mix-blend-multiply"></div>
+  <div class="absolute inset-0 bg-gradient-to-t from-defy-dark/70 to-transparent"></div>
+
+  <div class="relative container-defy w-full pb-10 pt-24">
+    <h1 class="font-serif text-4xl text-white sm:text-5xl">{title}</h1>
+    <nav aria-label="Breadcrumb" class="mt-3">
+      <ol class="flex flex-wrap items-center gap-2 text-sm text-white/80">
+        {
+          breadcrumbs.map((crumb, i) => (
+            <li class="flex items-center gap-2">
+              {i > 0 && <span aria-hidden="true" class="text-white/50">/</span>}
+              {crumb.href ? (
+                <a href={crumb.href} class="transition-colors hover:text-defy-rose">
+                  {crumb.label}
+                </a>
+              ) : (
+                <span class="text-white">{crumb.label}</span>
+              )}
+            </li>
+          ))
+        }
+      </ol>
+    </nav>
+  </div>
+</section>

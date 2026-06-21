@@ -1,0 +1,50 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SubBanner from '../components/SubBanner.astro';
+import SectionTitle from '../components/SectionTitle.astro';
+import SpecialistSection from '../components/SpecialistSection.astro';
+import about from '../content/pages/about-us.json';
+---
+
+<BaseLayout title="About Us" description={about.description} currentPath="/about-us">
+  <SubBanner
+    title="About Us"
+    image={about.banner}
+    breadcrumbs={[
+      { label: 'Home', href: '/' },
+      { label: 'About Us' },
+    ]}
+  />
+
+  <section class="py-16 sm:py-20">
+    <div class="container-defy">
+      <SectionTitle
+        accent={about.welcome.titleAccent}
+        title={about.welcome.title}
+        subtitle={about.welcome.lead}
+      />
+
+      <div class="grid items-start gap-10 lg:grid-cols-5 lg:gap-14">
+        <div class="lg:col-span-2">
+          <img
+            src="/images/defy-woman-tmp.jpg"
+            alt="DEFY aesthetic surgery practice"
+            class="w-full object-cover shadow-lg"
+            width={500}
+            height={650}
+            loading="lazy"
+          />
+        </div>
+        <div class="space-y-6 lg:col-span-3">
+          {
+            about.welcome.paragraphs.map((paragraph) => (
+              <p class="leading-relaxed text-defy-charcoal/90">{paragraph}</p>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <SpecialistSection {...about.specialist} />
+</BaseLayout>
