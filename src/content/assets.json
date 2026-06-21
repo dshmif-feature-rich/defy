@@ -1,0 +1,34 @@
+{
+  "source": "https://defyprs.com/images/",
+  "migratedAt": "2026-06-21",
+  "notes": {
+    "dr-john-apostolides-716.jpg": "404 on live site — use dr-a-629.jpg as substitute for Dr. John profile imagery",
+    "meet-team-banner.jpg": "Downloaded for completeness; meet-defy team page is out of scope",
+    "team-member2-5.jpg": "Downloaded for completeness; meet-defy team page is out of scope",
+    "appointment-clock.jpg": "Referenced in commented-out appointment form; not used in visible pages",
+    "timetable-menu-dark.png": "Legacy template asset; not used in new site",
+    "cancer-img.jpg": "Referenced in commented-out services template; not used in visible pages"
+  },
+  "branding": [
+    "defy-logo.png",
+    "favicon.png"
+  ],
+  "heroes": {
+    "home": "defy-woman-bg.png",
+    "about": "about-banner.jpg",
+    "meetJohn": "meet-john-banner.jpg",
+    "expertise": "expertise-banner.jpg",
+    "services": "services-banner2.jpg",
+    "contact": "contact-banner3.jpg"
+  },
+  "people": {
+    "drApostolidesCard": "dr-a-629.jpg",
+    "drApostolidesProfile": "dr-a-629.jpg"
+  },
+  "about": ["defy-woman-tmp.jpg"],
+  "carousels": {
+    "aging": ["aging-caro1.jpg", "aging-caro2.jpg", "aging-caro3.jpg"],
+    "cancer": ["cancer-caro1.jpg", "cancer-caro2.jpg", "cancer-caro3.jpg"],
+    "gravity": ["gravity-caro1.jpg", "gravity-caro2.jpg", "gravity-caro3.jpg"]
+  }
+}
