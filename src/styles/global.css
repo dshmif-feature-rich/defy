@@ -1,0 +1,56 @@
+@import "tailwindcss";
+
+@theme {
+  --color-defy-rose: #a96584;
+  --color-defy-rose-light: rgba(169, 101, 132, 0.65);
+  --color-defy-rose-overlay: rgba(169, 101, 132, 0.84);
+  --color-defy-teal: #02adc9;
+  --color-defy-teal-dark: #02b4d6;
+  --color-defy-charcoal: #464c5b;
+  --color-defy-warm: #f8f5f6;
+  --color-defy-dark: #2a2a2a;
+
+  --font-serif: "Cormorant Garamond", "Playfair Display", Georgia, serif;
+  --font-sans: "Source Sans 3", Inter, system-ui, sans-serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-defy-warm font-sans text-defy-charcoal antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-serif font-medium tracking-tight text-defy-dark;
+  }
+}
+
+@layer components {
+  .container-defy {
+    @apply mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8;
+  }
+
+  .section-title {
+    @apply font-serif text-3xl leading-tight text-defy-dark sm:text-4xl;
+  }
+
+  .section-title span {
+    @apply text-defy-rose;
+  }
+
+  .nav-link {
+    @apply block px-4 py-3 text-sm font-medium tracking-wide text-white/90 transition-colors hover:bg-defy-rose-light hover:text-white;
+  }
+
+  .nav-link-active {
+    @apply bg-defy-rose text-white;
+  }
+}

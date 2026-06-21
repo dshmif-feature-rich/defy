@@ -1,0 +1,159 @@
+---
+import { navItems } from '../config/site';
+
+interface Props {
+  currentPath: string;
+}
+
+const { currentPath } = Astro.props;
+
+function isActive(href: string): boolean {
+  if (href === '/') return currentPath === '/';
+  return currentPath === href || currentPath.startsWith(`${href}/`);
+}
+---
+
+<header class="sticky top-0 z-50 bg-white shadow-sm">
+  <div class="container-defy flex items-center justify-between py-4">
+    <a href="/" class="shrink-0">
+      <img
+        src="/images/defy-logo.png"
+        alt="DEFY Plastic and Reconstructive Surgery"
+        class="h-12 w-auto sm:h-14"
+        width="200"
+        height="71"
+      />
+    </a>
+
+    <!-- Desktop nav -->
+    <nav class="hidden lg:block" aria-label="Main navigation">
+      <ul class="flex items-stretch bg-defy-charcoal">
+        {
+          navItems.map((item) => (
+            <li class="group relative">
+              {item.external ? (
+                <a
+                  href={item.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="nav-link inline-flex items-center gap-1"
+                >
+                  {item.label}
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></svg>
+                </a>
+              ) : (
+                <a
+                  href={item.href}
+                  class:list={[
+                    'nav-link',
+                    isActive(item.href) && 'nav-link-active',
+                  ]}
+                >
+                  {item.label}
+                </a>
+              )}
+              {item.children && (
+                <ul class="absolute left-0 top-full hidden min-w-[180px] bg-defy-charcoal shadow-lg group-hover:block">
+                  {item.children.map((child) => (
+                    <li>
+                      <a
+                        href={child.href}
+                        class:list={[
+                          'nav-link',
+                          isActive(child.href) && 'nav-link-active',
+                        ]}
+                      >
+                        {child.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <!-- Mobile menu toggle -->
+    <button
+      type="button"
+      id="mobile-menu-btn"
+      class="inline-flex items-center justify-center rounded-md p-2 text-defy-charcoal hover:bg-defy-warm lg:hidden"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+      aria-label="Toggle navigation menu"
+    >
+      <svg id="menu-icon-open" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+      <svg id="menu-icon-close" class="hidden" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+    </button>
+  </div>
+
+  <!-- Mobile nav -->
+  <nav
+    id="mobile-menu"
+    class="hidden border-t border-defy-warm bg-defy-charcoal lg:hidden"
+    aria-label="Mobile navigation"
+  >
+    <ul>
+      {
+        navItems.map((item) => (
+          <li class="border-b border-white/10">
+            {item.external ? (
+              <a
+                href={item.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="nav-link"
+              >
+                {item.label}
+              </a>
+            ) : (
+              <a
+                href={item.href}
+                class:list={[
+                  'nav-link',
+                  isActive(item.href) && 'nav-link-active',
+                ]}
+              >
+                {item.label}
+              </a>
+            )}
+            {item.children && (
+              <ul class="bg-defy-charcoal/80 pl-4">
+                {item.children.map((child) => (
+                  <li>
+                    <a
+                      href={child.href}
+                      class:list={[
+                        'nav-link text-sm',
+                        isActive(child.href) && 'nav-link-active',
+                      ]}
+                    >
+                      {child.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+</header>
+
+<script>
+  const btn = document.getElementById('mobile-menu-btn');
+  const menu = document.getElementById('mobile-menu');
+  const iconOpen = document.getElementById('menu-icon-open');
+  const iconClose = document.getElementById('menu-icon-close');
+
+  btn?.addEventListener('click', () => {
+    const isOpen = !menu?.classList.contains('hidden');
+    menu?.classList.toggle('hidden', isOpen);
+    iconOpen?.classList.toggle('hidden', !isOpen);
+    iconClose?.classList.toggle('hidden', isOpen);
+    btn.setAttribute('aria-expanded', String(!isOpen));
+  });
+</script>

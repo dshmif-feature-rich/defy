@@ -1,0 +1,29 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Home" currentPath="/">
+  <section class="relative flex min-h-[70vh] items-end overflow-hidden bg-defy-dark">
+    <div
+      class="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-90"
+      style="background-image: url('/images/defy-woman-bg.png');"
+      role="img"
+      aria-label="DEFY aesthetic surgery"
+    >
+    </div>
+    <div class="absolute inset-0 bg-gradient-to-t from-defy-dark/80 via-defy-dark/30 to-transparent"></div>
+    <div class="relative container-defy pb-16 pt-32">
+      <p class="max-w-2xl font-serif text-2xl leading-relaxed text-white/95 sm:text-3xl">
+        San Diego's premier plastic, reconstructive, and aesthetic surgery practice.
+      </p>
+    </div>
+  </section>
+
+  <section class="py-16">
+    <div class="container-defy max-w-3xl text-center">
+      <p class="text-lg leading-relaxed text-defy-charcoal/90">
+        Phase A scaffold complete. Content pages coming in Phase B.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
