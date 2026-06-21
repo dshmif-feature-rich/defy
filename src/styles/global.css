@@ -57,6 +57,24 @@
   .hero-ken-burns {
     animation: ken-burns 20s ease-in-out infinite alternate;
   }
+
+  /* Woman is framed on the right; anchor crop on mobile */
+  .hero-image {
+    @apply h-full w-full object-cover;
+    object-position: 88% 18%;
+  }
+
+  @media (min-width: 640px) {
+    .hero-image {
+      object-position: 78% top;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .hero-image {
+      object-position: 62% top;
+    }
+  }
 }
 
 @keyframes ken-burns {
