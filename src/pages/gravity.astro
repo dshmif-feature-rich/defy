@@ -1,0 +1,22 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SubBanner from '../components/SubBanner.astro';
+import ExpertiseContent from '../components/ExpertiseContent.astro';
+import gravity from '../content/pages/gravity.json';
+
+const breadcrumbs = [
+  { label: 'Home', href: '/' },
+  { label: 'Expertise', href: '/aging' },
+  { label: gravity.bannerTitle },
+];
+---
+
+<BaseLayout title="Gravity" description={gravity.description} currentPath="/gravity">
+  <SubBanner title={gravity.bannerTitle} image={gravity.banner} breadcrumbs={breadcrumbs} />
+  <ExpertiseContent
+    sectionTitleAccent={gravity.sectionTitleAccent}
+    sectionTitle={gravity.sectionTitle}
+    paragraphs={gravity.paragraphs}
+    carousel={gravity.carousel}
+  />
+</BaseLayout>

@@ -1,0 +1,22 @@
+{
+  "description": "DEFY provides advanced breast cancer reconstruction including DIEP flap and implant-based techniques in San Diego.",
+  "banner": "expertise-banner.jpg",
+  "bannerTitle": "Cancer",
+  "sectionTitleAccent": "How We Help With",
+  "sectionTitle": "Cancer Recovery",
+  "paragraphs": [
+    "Based on extensive experience in high volume breast reconstruction from The Johns Hopkins Hospital, our DEFY team will provide you with the most advanced and successful techniques in reconstructive Breast Surgery:"
+  ],
+  "sections": [
+    {
+      "heading": "Implant Based Reconstruction",
+      "text": "Pre-pectoral (Over the Muscle) breast reconstruction is the latest, most advanced, and minimally invasive approach to implant based reconstruction. Utilizing advances in acellular dermal tissues and autologous fat grafting (fat injections), we can restore breast aesthetics in the most difficult reconstructive settings. Along with the traditional \"dual plane\" subpectoral (Under the Muscle) approach, a breast cancer diagnosis does not have to mean a loss of breast aesthetics."
+    },
+    {
+      "heading": "Autologous Reconstruction",
+      "text": "The DIEP flap is one of the newest and most advanced reconstructive techniques that we offer. The DIEP flap stands for \"Deep Inferior Epigastric Perforator\" flap. It is a technique of taking the excess skin and fat from the abdomen, as you would in a tummy tuck, based on a small blood vessel that feeds blood to the tissue. We then reconnect those blood vessels to an artery and vein in the breast effectively replacing the breast tissue removed with a mastectomy. The result is a tummy tuck of the abdomen, with your abdominal muscles spared (unlike the more traditional TRAM procedure) and a reconstructed breast. This can be performed for a single breast or both breasts. This new method allows a woman to replace her breast tissue with similar tissue for a functional and aesthetic reconstruction. Additionally, the patient benefits from a tummy tuck of the abdomen without any ill effect on the musculature. Along with various other flaps (SGAP, TUG, and TDAP flaps) and implant based reconstruction, we are bringing the latest advances in breast cancer reconstruction to San Diego."
+    }
+  ],
+  "closing": "Specializing in complex reconstruction of the Face and Lower extremity, in addition to Breast Cancer Reconstruction, we are advancing the procedures and techniques offered in Southern California. We offer the most advanced perforator flaps (muscle sparing reconstructions) for the entire body and face.",
+  "carousel": ["cancer-caro1.jpg", "cancer-caro2.jpg", "cancer-caro3.jpg"]
+}

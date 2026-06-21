@@ -1,0 +1,24 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SubBanner from '../components/SubBanner.astro';
+import ExpertiseContent from '../components/ExpertiseContent.astro';
+import cancer from '../content/pages/cancer.json';
+
+const breadcrumbs = [
+  { label: 'Home', href: '/' },
+  { label: 'Expertise', href: '/aging' },
+  { label: cancer.bannerTitle },
+];
+---
+
+<BaseLayout title="Cancer" description={cancer.description} currentPath="/cancer">
+  <SubBanner title={cancer.bannerTitle} image={cancer.banner} breadcrumbs={breadcrumbs} />
+  <ExpertiseContent
+    sectionTitleAccent={cancer.sectionTitleAccent}
+    sectionTitle={cancer.sectionTitle}
+    paragraphs={cancer.paragraphs}
+    sections={cancer.sections}
+    closing={cancer.closing}
+    carousel={cancer.carousel}
+  />
+</BaseLayout>

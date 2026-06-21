@@ -1,0 +1,64 @@
+---
+import SectionTitle from './SectionTitle.astro';
+import ImageCarousel from './ImageCarousel.astro';
+
+interface Section {
+  heading: string;
+  text: string;
+}
+
+interface Props {
+  sectionTitleAccent: string;
+  sectionTitle: string;
+  paragraphs: string[];
+  sections?: Section[];
+  closing?: string;
+  carousel: string[];
+}
+
+const {
+  sectionTitleAccent,
+  sectionTitle,
+  paragraphs,
+  sections,
+  closing,
+  carousel,
+} = Astro.props;
+---
+
+<section class="py-16 sm:py-20">
+  <div class="container-defy">
+    <SectionTitle
+      accent={sectionTitleAccent}
+      title={sectionTitle}
+      align="left"
+    />
+
+    <div class="grid items-start gap-10 lg:grid-cols-2 lg:gap-14">
+      <div class="space-y-6">
+        {
+          paragraphs.map((paragraph) => (
+            <p class="leading-relaxed text-defy-charcoal/90">{paragraph}</p>
+          ))
+        }
+        {
+          sections?.map((section) => (
+            <div>
+              <h3 class="mb-2 font-serif text-xl text-defy-rose">
+                {section.heading}
+              </h3>
+              <p class="leading-relaxed text-defy-charcoal/90">{section.text}</p>
+            </div>
+          ))
+        }
+        {closing && (
+          <p class="leading-relaxed text-defy-charcoal/90">{closing}</p>
+        )}
+      </div>
+
+      <div class="lg:sticky lg:top-28">
+        <ImageCarousel images={carousel} alt={sectionTitle} />
+      </div>
+    </div>
+  </div>
+</section>

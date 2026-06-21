@@ -1,0 +1,32 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SubBanner from '../components/SubBanner.astro';
+import ServicesAccordion from '../components/ServicesAccordion.astro';
+import servicesPage from '../content/pages/services.json';
+
+const breadcrumbs = [
+  { label: 'Home', href: '/' },
+  { label: servicesPage.bannerTitle },
+];
+---
+
+<BaseLayout
+  title="Services"
+  description={servicesPage.description}
+  currentPath="/services"
+>
+  <SubBanner
+    title={servicesPage.bannerTitle}
+    image={servicesPage.banner}
+    breadcrumbs={breadcrumbs}
+  />
+
+  <section class="py-16 sm:py-20">
+    <div class="container-defy">
+      <div class="mb-10 text-center">
+        <h2 class="section-title"><span>Our</span> Services</h2>
+      </div>
+      <ServicesAccordion />
+    </div>
+  </section>
+</BaseLayout>

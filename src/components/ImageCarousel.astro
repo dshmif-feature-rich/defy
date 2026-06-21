@@ -1,0 +1,129 @@
+---
+interface Props {
+  images: string[];
+  alt?: string;
+}
+
+const { images, alt = 'DEFY procedure gallery' } = Astro.props;
+const carouselId = `carousel-${Math.random().toString(36).slice(2, 9)}`;
+---
+
+<div class="carousel-root" data-carousel={carouselId}>
+  <div class="relative overflow-hidden rounded-sm shadow-lg">
+    <div
+      class="carousel-track flex snap-x snap-mandatory overflow-x-auto scroll-smooth"
+      tabindex="0"
+      aria-label="Image gallery"
+    >
+      {
+        images.map((image, i) => (
+          <div class="carousel-slide min-w-full snap-center">
+            <img
+              src={`/images/${image}`}
+              alt={`${alt} ${i + 1}`}
+              class="aspect-[4/3] w-full object-cover"
+              loading={i === 0 ? 'eager' : 'lazy'}
+              width={800}
+              height={600}
+            />
+          </div>
+        ))
+      }
+    </div>
+
+    {
+      images.length > 1 && (
+        <>
+          <button
+            type="button"
+            class="carousel-prev absolute top-1/2 left-3 -translate-y-1/2 rounded-full bg-defy-rose/90 p-2 text-white shadow transition-colors hover:bg-defy-rose"
+            aria-label="Previous image"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+          </button>
+          <button
+            type="button"
+            class="carousel-next absolute top-1/2 right-3 -translate-y-1/2 rounded-full bg-defy-rose/90 p-2 text-white shadow transition-colors hover:bg-defy-rose"
+            aria-label="Next image"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+          </button>
+        </>
+      )
+    }
+  </div>
+
+  {
+    images.length > 1 && (
+      <div class="carousel-dots mt-4 flex justify-center gap-2">
+        {
+          images.map((_, i) => (
+            <button
+              type="button"
+              class="carousel-dot h-2.5 w-2.5 rounded-full bg-defy-charcoal/20 transition-colors"
+              aria-label={`Go to image ${i + 1}`}
+              data-index={i}
+            />
+          ))
+        }
+      </div>
+    )
+  }
+</div>
+
+<script>
+  document.querySelectorAll('[data-carousel]').forEach((root) => {
+    const track = root.querySelector('.carousel-track') as HTMLElement;
+    const slides = root.querySelectorAll('.carousel-slide');
+    const dots = root.querySelectorAll('.carousel-dot');
+    const prev = root.querySelector('.carousel-prev');
+    const next = root.querySelector('.carousel-next');
+    if (!track || slides.length === 0) return;
+
+    let index = 0;
+
+    const goTo = (i: number) => {
+      index = (i + slides.length) % slides.length;
+      const slide = slides[index] as HTMLElement;
+      track.scrollTo({ left: slide.offsetLeft, behavior: 'smooth' });
+      dots.forEach((dot, di) => {
+        dot.classList.toggle('bg-defy-rose', di === index);
+        dot.classList.toggle('bg-defy-charcoal/20', di !== index);
+      });
+    };
+
+    prev?.addEventListener('click', () => goTo(index - 1));
+    next?.addEventListener('click', () => goTo(index + 1));
+    dots.forEach((dot) => {
+      dot.addEventListener('click', () => {
+        const i = Number((dot as HTMLElement).dataset.index);
+        goTo(i);
+      });
+    });
+
+    track.addEventListener('scroll', () => {
+      const scrollLeft = track.scrollLeft;
+      slides.forEach((slide, i) => {
+        const el = slide as HTMLElement;
+        if (Math.abs(el.offsetLeft - scrollLeft) < 10) {
+          index = i;
+          dots.forEach((dot, di) => {
+            dot.classList.toggle('bg-defy-rose', di === index);
+            dot.classList.toggle('bg-defy-charcoal/20', di !== index);
+          });
+        }
+      });
+    });
+
+    goTo(0);
+  });
+</script>
+
+<style>
+  .carousel-track {
+    scrollbar-width: none;
+  }
+  .carousel-track::-webkit-scrollbar {
+    display: none;
+  }
+</style>

@@ -1,0 +1,22 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SubBanner from '../components/SubBanner.astro';
+import ExpertiseContent from '../components/ExpertiseContent.astro';
+import aging from '../content/pages/aging.json';
+
+const breadcrumbs = [
+  { label: 'Home', href: '/' },
+  { label: 'Expertise', href: '/aging' },
+  { label: aging.bannerTitle },
+];
+---
+
+<BaseLayout title="Aging" description={aging.description} currentPath="/aging">
+  <SubBanner title={aging.bannerTitle} image={aging.banner} breadcrumbs={breadcrumbs} />
+  <ExpertiseContent
+    sectionTitleAccent={aging.sectionTitleAccent}
+    sectionTitle={aging.sectionTitle}
+    paragraphs={aging.paragraphs}
+    carousel={aging.carousel}
+  />
+</BaseLayout>

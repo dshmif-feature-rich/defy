@@ -1,0 +1,13 @@
+{
+  "description": "DEFY offers advanced anti-aging techniques and personalized wellness strategies in San Diego.",
+  "banner": "expertise-banner.jpg",
+  "bannerTitle": "Aging",
+  "sectionTitleAccent": "How We Treat",
+  "sectionTitle": "Aging",
+  "paragraphs": [
+    "We utilize the most diverse, advanced, and safest techniques to provide clients a means to minimize, slow and in many cases reverse the effects of aging.",
+    "At DEFY we take a comprehensive and individual approach to your wellness and beauty. During your consultation, we will first evaluate and discuss every aspect of your health and aesthetic goals. We then create a customized, all inclusive, and effective strategy that will result in your own personalized \"Anti-Aging\" regimen.",
+    "Our thorough and unique approach will help you look and feel your absolute best. Whether you are in your 20's or late 90's, there is means to prevent the signs of aging. We will boost, preserve, and maximize your absolute beauty. Let us show you how."
+  ],
+  "carousel": ["aging-caro1.jpg", "aging-caro2.jpg", "aging-caro3.jpg"]
+}

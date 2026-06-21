@@ -1,0 +1,48 @@
+---
+import services from '../content/services.json';
+
+const categories = [
+  { key: 'reconstruction' as const, label: 'Reconstruction' },
+  { key: 'cosmetic' as const, label: 'Cosmetic' },
+  { key: 'injectables' as const, label: 'Injectables' },
+];
+---
+
+<div class="mx-auto max-w-3xl space-y-3">
+  {
+    categories.map((category, i) => (
+      <details
+        class="group overflow-hidden border border-defy-charcoal/10 bg-white shadow-sm open:border-defy-rose/30"
+        open={i === 0}
+      >
+        <summary class="flex cursor-pointer list-none items-center justify-between bg-defy-charcoal px-6 py-4 text-white transition-colors marker:content-none group-open:bg-defy-rose">
+          <span class="font-serif text-lg tracking-wide">{category.label}</span>
+          <svg
+            class="h-5 w-5 shrink-0 transition-transform group-open:rotate-180"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="m6 9 6 6 6-6" />
+          </svg>
+        </summary>
+        <ul class="divide-y divide-defy-charcoal/5 px-6 py-2">
+          {services[category.key].map((service) => (
+            <li class="py-3 text-defy-charcoal/90">{service}</li>
+          ))}
+        </ul>
+      </details>
+    ))
+  }
+</div>
+
+<style>
+  details > summary::-webkit-details-marker {
+    display: none;
+  }
+</style>
