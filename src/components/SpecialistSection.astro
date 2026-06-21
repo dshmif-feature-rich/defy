@@ -33,7 +33,11 @@ const photo = getImage(image);
     <SectionTitle accent={titleAccent} title={title} subtitle={subtitle} />
 
     <div class="mx-auto grid max-w-5xl gap-10 lg:grid-cols-2 lg:items-center">
-      <div class="group relative overflow-hidden">
+      <a
+        href={profileHref}
+        class="group relative block overflow-hidden"
+        aria-label={`View profile for ${name}`}
+      >
         <Image
           src={photo}
           alt={name}
@@ -43,7 +47,7 @@ const photo = getImage(image);
           loading="lazy"
         />
         <div class="absolute inset-0 bg-defy-rose-overlay/0 transition-colors duration-500 group-hover:bg-defy-rose-overlay/30"></div>
-      </div>
+      </a>
 
       <div>
         <h3 class="font-serif text-2xl text-defy-rose">{name}</h3>
