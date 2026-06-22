@@ -1,5 +1,8 @@
 name: Deploy to GitHub Pages
 
+# Requires GitHub Pages source set to "GitHub Actions" in repo Settings → Pages
+# before the first deploy will succeed.
+
 on:
   push:
     branches: [main]
