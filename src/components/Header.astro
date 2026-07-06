@@ -10,9 +10,16 @@ interface Props {
 const { currentPath } = Astro.props;
 const logo = getImage('defy-logo.png');
 
+function normalizePath(p: string): string {
+  // Strip trailing slashes for robust matching (Astro paths sometimes have them, sometimes not)
+  return (p || '/').replace(/\/+$/, '') || '/';
+}
+
 function isPathActive(href: string): boolean {
-  if (href === '/') return currentPath === '/';
-  return currentPath === href || currentPath.startsWith(`${href}/`);
+  const cur = normalizePath(currentPath);
+  const h = normalizePath(href);
+  if (h === '/') return cur === '/';
+  return cur === h || cur.startsWith(`${h}/`);
 }
 
 function isItemActive(item: { href: string; children?: { href: string }[] }): boolean {

@@ -16,9 +16,13 @@ interface Props {
 const {
   title,
   description = `${site.name} — ${site.tagline}. San Diego's premier plastic, reconstructive, and aesthetic surgery practice.`,
-  currentPath = Astro.url.pathname,
+  currentPath: rawCurrentPath = Astro.url.pathname,
   ogImage = `${site.url}/og-image.png`,
 } = Astro.props;
+
+// Normalize currentPath (strip trailing slash) for consistent nav active matching + canonicals.
+// Pages pass explicit values (without base); Astro.url.pathname also excludes base.
+let currentPath = (rawCurrentPath || '/').replace(/\/+$/, '') || '/';
 
 const pageTitle = title === 'Home' ? site.name : `${title} — ${site.name}`;
 
