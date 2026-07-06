@@ -44,53 +44,65 @@ function isItemActive(item: { href: string; children?: { href: string }[] }): bo
       />
     </a>
 
+    <!-- Desktop navigation: clean, light, modern (no heavy dark bar) -->
     <nav class="hidden lg:block" aria-label="Main navigation">
-      <ul class="flex items-stretch bg-defy-charcoal">
-        {
-          navItems.map((item) => (
-            <li class="group relative">
-              {item.external ? (
-                <a
-                  href={withBase(item.href)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="nav-link inline-flex items-center gap-1"
-                >
-                  {item.label}
-                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></svg>
-                </a>
-              ) : (
-                <a
-                  href={withBase(item.href)}
-                  class:list={[
-                    'nav-link',
-                    isItemActive(item) && 'nav-link-active',
-                  ]}
-                >
-                  {item.label}
-                </a>
-              )}
-              {item.children && (
-                <ul class="absolute left-0 top-full hidden min-w-[180px] bg-defy-charcoal shadow-lg group-hover:block">
-                  {item.children.map((child) => (
-                    <li>
-                      <a
-                        href={withBase(child.href)}
-                        class:list={[
-                          'nav-link',
-                          isPathActive(child.href) && 'nav-link-active',
-                        ]}
-                      >
-                        {child.label}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </li>
-          ))
-        }
-      </ul>
+      <div class="flex items-center gap-x-2">
+        <ul class="flex items-center">
+          {
+            navItems.map((item) => (
+              <li class="group relative">
+                {item.external ? (
+                  <a
+                    href={withBase(item.href)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="nav-link inline-flex items-center gap-1"
+                  >
+                    {item.label}
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></svg>
+                  </a>
+                ) : (
+                  <a
+                    href={withBase(item.href)}
+                    class:list={[
+                      'nav-link',
+                      isItemActive(item) && 'nav-link-active',
+                    ]}
+                  >
+                    {item.label}
+                  </a>
+                )}
+
+                {item.children && (
+                  <ul class="absolute left-0 top-full mt-1 hidden min-w-[200px] rounded-lg border border-defy-warm bg-white py-1 shadow-xl group-hover:block z-50">
+                    {item.children.map((child) => (
+                      <li>
+                        <a
+                          href={withBase(child.href)}
+                          class:list={[
+                            'block px-4 py-2 text-sm text-defy-charcoal transition-colors hover:bg-defy-warm hover:text-defy-rose',
+                            isPathActive(child.href) && 'font-medium text-defy-rose',
+                          ]}
+                        >
+                          {child.label}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </li>
+            ))
+          }
+        </ul>
+
+        <!-- Modern CTA button -->
+        <a
+          href={withBase('/contact-us')}
+          class="ml-3 hidden lg:inline-flex items-center justify-center rounded-full bg-defy-rose px-5 py-1.5 text-xs font-semibold tracking-widest text-white shadow-sm transition hover:bg-defy-rose-dark focus:outline-none focus-visible:ring-2 focus-visible:ring-defy-rose/50"
+        >
+          BOOK CONSULTATION
+        </a>
+      </div>
     </nav>
 
     <button
@@ -106,44 +118,47 @@ function isItemActive(item: { href: string; children?: { href: string }[] }): bo
     </button>
   </div>
 
+  <!-- Mobile menu: clean light modern style -->
   <nav
     id="mobile-menu"
-    class="hidden border-t border-defy-warm bg-defy-charcoal lg:hidden"
+    class="hidden border-t border-defy-warm bg-white lg:hidden"
     aria-label="Mobile navigation"
   >
-    <ul>
+    <ul class="divide-y divide-defy-warm">
       {
         navItems.map((item) => (
-          <li class="border-b border-white/10">
+          <li>
             {item.external ? (
               <a
                 href={withBase(item.href)}
                 target="_blank"
                 rel="noopener noreferrer"
-                class="nav-link"
+                class="flex items-center justify-between px-5 py-3 text-sm font-medium text-defy-charcoal hover:text-defy-rose"
               >
                 {item.label}
+                <span aria-hidden="true">↗</span>
               </a>
             ) : (
               <a
                 href={withBase(item.href)}
                 class:list={[
-                  'nav-link',
-                  isItemActive(item) && 'nav-link-active',
+                  'block px-5 py-3 text-sm font-medium text-defy-charcoal hover:text-defy-rose',
+                  isItemActive(item) && 'text-defy-rose',
                 ]}
               >
                 {item.label}
               </a>
             )}
+
             {item.children && (
-              <ul class="bg-defy-charcoal/80 pl-4">
+              <ul class="bg-defy-warm/60 pl-5">
                 {item.children.map((child) => (
                   <li>
                     <a
                       href={withBase(child.href)}
                       class:list={[
-                        'nav-link text-sm',
-                        isPathActive(child.href) && 'nav-link-active',
+                        'block px-5 py-2.5 text-sm text-defy-charcoal/90 hover:text-defy-rose',
+                        isPathActive(child.href) && 'font-medium text-defy-rose',
                       ]}
                     >
                       {child.label}
@@ -155,6 +170,16 @@ function isItemActive(item: { href: string; children?: { href: string }[] }): bo
           </li>
         ))
       }
+
+      <!-- Mobile CTA -->
+      <li class="p-4">
+        <a
+          href={withBase('/contact-us')}
+          class="block w-full rounded-full bg-defy-rose py-2.5 text-center text-xs font-semibold tracking-[1.5px] text-white active:bg-defy-rose-dark"
+        >
+          BOOK CONSULTATION
+        </a>
+      </li>
     </ul>
   </nav>
 </header>
