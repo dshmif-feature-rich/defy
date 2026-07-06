@@ -10,9 +10,17 @@ interface Props {
 const { currentPath } = Astro.props;
 const logo = getImage('defy-logo.png');
 
-function isActive(href: string): boolean {
+function isPathActive(href: string): boolean {
   if (href === '/') return currentPath === '/';
   return currentPath === href || currentPath.startsWith(`${href}/`);
+}
+
+function isItemActive(item: { href: string; children?: { href: string }[] }): boolean {
+  if (isPathActive(item.href)) return true;
+  if (item.children) {
+    return item.children.some((child) => isPathActive(child.href));
+  }
+  return false;
 }
 ---
 
@@ -49,7 +57,7 @@ function isActive(href: string): boolean {
                   href={withBase(item.href)}
                   class:list={[
                     'nav-link',
-                    isActive(item.href) && 'nav-link-active',
+                    isItemActive(item) && 'nav-link-active',
                   ]}
                 >
                   {item.label}
@@ -63,7 +71,7 @@ function isActive(href: string): boolean {
                         href={withBase(child.href)}
                         class:list={[
                           'nav-link',
-                          isActive(child.href) && 'nav-link-active',
+                          isPathActive(child.href) && 'nav-link-active',
                         ]}
                       >
                         {child.label}
@@ -114,7 +122,7 @@ function isActive(href: string): boolean {
                 href={withBase(item.href)}
                 class:list={[
                   'nav-link',
-                  isActive(item.href) && 'nav-link-active',
+                  isItemActive(item) && 'nav-link-active',
                 ]}
               >
                 {item.label}
@@ -128,7 +136,7 @@ function isActive(href: string): boolean {
                       href={withBase(child.href)}
                       class:list={[
                         'nav-link text-sm',
-                        isActive(child.href) && 'nav-link-active',
+                        isPathActive(child.href) && 'nav-link-active',
                       ]}
                     >
                       {child.label}
