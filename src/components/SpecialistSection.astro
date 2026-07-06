@@ -2,6 +2,7 @@
 import { Image } from 'astro:assets';
 import SectionTitle from './SectionTitle.astro';
 import { getImage } from '../lib/images';
+import { withBase } from '../config/site';
 
 interface Props {
   titleAccent: string;
@@ -34,7 +35,7 @@ const photo = getImage(image);
 
     <div class="mx-auto grid max-w-5xl gap-10 lg:grid-cols-2 lg:items-center">
       <a
-        href={profileHref}
+        href={withBase(profileHref)}
         class="group relative block overflow-hidden"
         aria-label={`View profile for ${name}`}
       >
@@ -56,7 +57,7 @@ const photo = getImage(image);
         </p>
         <p class="mt-5 leading-relaxed text-defy-charcoal/90">{bio}</p>
         <a
-          href={profileHref}
+          href={withBase(profileHref)}
           class="mt-6 inline-block text-sm font-medium tracking-wide text-defy-rose transition-colors hover:text-defy-charcoal"
         >
           — View Profile

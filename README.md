@@ -39,6 +39,8 @@ gh repo create defy --private --source=. --remote=origin --push
 3. Push to `main` (or re-run the workflow in the **Actions** tab)
 4. Wait for the `Deploy to GitHub Pages` workflow to finish
 
+> The build is configured to automatically use `base: /defy` + matching `site` when `BASE_PATH` and `SITE_URL` env vars are present (see `.github/workflows/deploy.yml` and `astro.config.mjs`). This makes the preview at `https://<user>.github.io/defy/` work. After you cut over the custom domain `defyprs.com`, the workflow (or local builds) will default to root paths.
+
 ### 3. Custom domain DNS cutover
 
 `public/CNAME` already contains `defyprs.com`.

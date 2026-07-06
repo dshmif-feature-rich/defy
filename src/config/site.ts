@@ -1,7 +1,24 @@
+// Base and site are provided by Astro at build time from astro.config (which reads process.env for conditional GH Pages subpath).
+export const base = import.meta.env.BASE_URL || '/';
+
+export function withBase(path: string): string {
+  if (!path) return base;
+  // Leave fully-qualified and special-scheme URLs untouched
+  if (path.startsWith('http://') || path.startsWith('https://') || path.startsWith('//') || path.startsWith('mailto:') || path.startsWith('tel:')) {
+    return path;
+  }
+  const b = base.endsWith('/') ? base : base + '/';
+  if (path === '/' || path === '') {
+    return b;  // e.g. /defy/ or /
+  }
+  const p = path.startsWith('/') ? path.slice(1) : path;
+  return (b + p).replace(/\/$/, '');
+}
+
 export const site = {
   name: 'DEFY PRS',
   tagline: 'Plastic, Reconstructive & Aesthetic Surgery Practice',
-  url: 'https://defyprs.com',
+  url: import.meta.env.SITE || 'https://defyprs.com',
   phone: '(619) 222-3339',
   phoneTel: '+16192223339',
   email: 'info@defyprs.com',

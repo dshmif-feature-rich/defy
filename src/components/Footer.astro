@@ -1,5 +1,5 @@
 ---
-import { site, footerGuideLinks } from '../config/site';
+import { site, footerGuideLinks, withBase } from '../config/site';
 
 const year = new Date().getFullYear();
 ---
@@ -17,7 +17,7 @@ const year = new Date().getFullYear();
               <li>
                 {'external' in link && link.external ? (
                   <a
-                    href={link.href}
+                    href={withBase(link.href)}
                     target="_blank"
                     rel="noopener noreferrer"
                     class="transition-colors hover:text-defy-rose"
@@ -27,7 +27,7 @@ const year = new Date().getFullYear();
                   </a>
                 ) : (
                   <a
-                    href={link.href}
+                    href={withBase(link.href)}
                     class="transition-colors hover:text-defy-rose"
                   >
                     {link.label}
