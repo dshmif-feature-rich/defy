@@ -39,13 +39,13 @@ gh repo create defy --private --source=. --remote=origin --push
 3. Push to `main` (or re-run the workflow in the **Actions** tab)
 4. Wait for the `Deploy to GitHub Pages` workflow to finish
 
-> The build is configured to automatically use `base: /defy` + matching `site` when `BASE_PATH` and `SITE_URL` env vars are present (see `.github/workflows/deploy.yml` and `astro.config.mjs`). This makes the preview at `https://<user>.github.io/defy/` work. After you cut over the custom domain `defyprs.com`, the workflow (or local builds) will default to root paths.
+> The workflow builds for the custom domain at root (`BASE_PATH=/`, `SITE_URL=https://www.defyprs.com`). To temporarily preview on the project URL (`https://<user>.github.io/defy/`), set `BASE_PATH=/defy` and a matching `SITE_URL` in the workflow env.
 
 ### 3. Custom domain DNS cutover
 
-`public/CNAME` already contains `defyprs.com`.
+`public/CNAME` contains `www.defyprs.com` (primary host; apex redirects to www).
 
-**At your domain registrar**, replace the current Firebase/Fastly records with GitHub Pages:
+**At your domain registrar**, use GitHub Pages records:
 
 | Type | Host | Value |
 |------|------|-------|
@@ -55,7 +55,7 @@ gh repo create defy --private --source=. --remote=origin --push
 | A | `@` | `185.199.111.153` |
 | CNAME | `www` | `YOUR_GITHUB_USERNAME.github.io` |
 
-Then in **Settings → Pages → Custom domain**, enter `defyprs.com` and enable **Enforce HTTPS**.
+Then in **Settings → Pages → Custom domain**, enter `www.defyprs.com` and enable **Enforce HTTPS**.
 
 DNS propagation can take up to 48 hours. Verify with:
 

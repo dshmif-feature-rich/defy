@@ -18,7 +18,7 @@ export function withBase(path: string): string {
 export const site = {
   name: 'DEFY PRS',
   tagline: 'Plastic, Reconstructive & Aesthetic Surgery Practice',
-  url: import.meta.env.SITE || 'https://defyprs.com',
+  url: import.meta.env.SITE || 'https://www.defyprs.com',
   phone: '(619) 222-3339',
   phoneTel: '+16192223339',
   email: 'info@defyprs.com',

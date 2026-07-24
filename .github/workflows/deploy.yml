@@ -31,10 +31,10 @@ jobs:
           node-version: 24
           package-manager: npm@latest
         env:
-          # Conditional base for the current GitHub Pages subpath preview.
-          # Remove or override these after custom domain (defyprs.com) cutover.
-          SITE_URL: https://dshmif-feature-rich.github.io/defy
-          BASE_PATH: /defy
+          # Custom domain serves the site at the root (not /defy).
+          # Apex defyprs.com 301s to www; use www for canonicals.
+          SITE_URL: https://www.defyprs.com
+          BASE_PATH: /
 
   deploy:
     needs: build
