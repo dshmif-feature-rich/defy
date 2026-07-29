@@ -34,6 +34,7 @@ export const externalLinks = {
   careCredit:
     'https://www.carecredit.com/apply/confirm.html?encm=XTwFPFQ2AWQAPFYyWm8OZlVnAGAEYVhrB2sCMlA_ATU&?gemid1=B3CALAdToolkitANCard',
   patientFi: 'https://app.patientfi.com/defyrprs',
+  skincareStore: 'https://defyprs.brilliantconnections.com/',
 } as const;
 
 export type NavItem = {

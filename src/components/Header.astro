@@ -1,6 +1,6 @@
 ---
 import { Image } from 'astro:assets';
-import { navItems, withBase } from '../config/site';
+import { externalLinks, navItems, withBase } from '../config/site';
 import { getImage } from '../lib/images';
 
 interface Props {
@@ -95,13 +95,23 @@ function isItemActive(item: { href: string; children?: { href: string }[] }): bo
           }
         </ul>
 
-        <!-- Modern CTA button -->
-        <a
-          href={withBase('/contact-us')}
-          class="ml-3 hidden lg:inline-flex items-center justify-center rounded-full bg-defy-rose px-5 py-1.5 text-xs font-semibold tracking-widest text-white shadow-sm transition hover:bg-defy-rose-dark focus:outline-none focus-visible:ring-2 focus-visible:ring-defy-rose/50"
-        >
-          BOOK CONSULTATION
-        </a>
+        <!-- CTA buttons -->
+        <div class="ml-3 hidden lg:flex items-center gap-2">
+          <a
+            href={withBase('/contact-us')}
+            class="inline-flex items-center justify-center rounded-full bg-defy-rose px-5 py-1.5 text-xs font-semibold tracking-widest text-white shadow-sm transition hover:bg-defy-rose-dark focus:outline-none focus-visible:ring-2 focus-visible:ring-defy-rose/50"
+          >
+            BOOK CONSULTATION
+          </a>
+          <a
+            href={externalLinks.skincareStore}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center justify-center rounded-full border border-defy-rose bg-white px-5 py-1.5 text-xs font-semibold tracking-widest text-defy-rose shadow-sm transition hover:bg-defy-warm focus:outline-none focus-visible:ring-2 focus-visible:ring-defy-rose/50"
+          >
+            SKINCARE STORE
+          </a>
+        </div>
       </div>
     </nav>
 
@@ -171,13 +181,21 @@ function isItemActive(item: { href: string; children?: { href: string }[] }): bo
         ))
       }
 
-      <!-- Mobile CTA -->
-      <li class="p-4">
+      <!-- Mobile CTAs -->
+      <li class="flex flex-col gap-2 p-4">
         <a
           href={withBase('/contact-us')}
           class="block w-full rounded-full bg-defy-rose py-2.5 text-center text-xs font-semibold tracking-[1.5px] text-white active:bg-defy-rose-dark"
         >
           BOOK CONSULTATION
+        </a>
+        <a
+          href={externalLinks.skincareStore}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="block w-full rounded-full border border-defy-rose bg-white py-2.5 text-center text-xs font-semibold tracking-[1.5px] text-defy-rose active:bg-defy-warm"
+        >
+          SKINCARE STORE
         </a>
       </li>
     </ul>
