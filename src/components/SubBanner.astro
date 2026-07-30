@@ -26,23 +26,34 @@ const { title, image, breadcrumbs } = Astro.props;
     sizes="100vw"
     loading="eager"
   />
-  <div class="absolute inset-0 bg-defy-rose-overlay/60 mix-blend-multiply"></div>
-  <div class="absolute inset-0 bg-gradient-to-t from-defy-dark/70 to-transparent"></div>
+  {/* Stronger dark overlay so white heading text meets contrast on all photos */}
+  <div class="absolute inset-0 bg-defy-dark/55" aria-hidden="true"></div>
+  <div
+    class="absolute inset-0 bg-gradient-to-t from-defy-dark/80 to-defy-dark/20"
+    aria-hidden="true"
+  ></div>
 
   <div class="relative container-defy w-full pb-10 pt-24">
     <h1 class="font-serif text-4xl text-white sm:text-5xl">{title}</h1>
     <nav aria-label="Breadcrumb" class="mt-3">
-      <ol class="flex flex-wrap items-center gap-2 text-sm text-white/80">
+      <ol class="flex flex-wrap items-center gap-2 text-sm text-white">
         {
           breadcrumbs.map((crumb, i) => (
             <li class="flex items-center gap-2">
-              {i > 0 && <span aria-hidden="true" class="text-white/50">/</span>}
+              {i > 0 && (
+                <span aria-hidden="true" class="text-white/70">
+                  /
+                </span>
+              )}
               {crumb.href ? (
-                <a href={withBase(crumb.href)} class="transition-colors hover:text-defy-rose">
+                <a
+                  href={withBase(crumb.href)}
+                  class="underline-offset-2 transition-colors hover:underline focus-visible:underline"
+                >
                   {crumb.label}
                 </a>
               ) : (
-                <span class="text-white">{crumb.label}</span>
+                <span aria-current="page">{crumb.label}</span>
               )}
             </li>
           ))

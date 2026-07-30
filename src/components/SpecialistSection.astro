@@ -51,16 +51,16 @@ const photo = getImage(image);
       </a>
 
       <div>
-        <h3 class="font-serif text-2xl text-defy-rose">{name}</h3>
-        <p class="mt-1 text-sm font-medium tracking-wide text-defy-charcoal/70 uppercase">
+        <h3 class="font-serif text-2xl text-defy-rose-dark">{name}</h3>
+        <p class="mt-1 text-sm font-medium tracking-wide text-defy-charcoal uppercase">
           {role}
         </p>
-        <p class="mt-5 leading-relaxed text-defy-charcoal/90">{bio}</p>
+        <p class="mt-5 leading-relaxed text-defy-charcoal">{bio}</p>
         <a
           href={withBase(profileHref)}
-          class="mt-6 inline-block text-sm font-medium tracking-wide text-defy-rose transition-colors hover:text-defy-charcoal"
+          class="mt-6 inline-flex min-h-11 items-center text-sm font-semibold tracking-wide text-defy-rose-dark underline-offset-4 transition-colors hover:text-defy-dark hover:underline"
         >
-          — View Profile
+          View profile for {name}
         </a>
       </div>
     </div>

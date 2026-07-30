@@ -39,21 +39,21 @@ const {
       <div class="space-y-6">
         {
           paragraphs.map((paragraph) => (
-            <p class="leading-relaxed text-defy-charcoal/90">{paragraph}</p>
+            <p class="leading-relaxed text-defy-charcoal">{paragraph}</p>
           ))
         }
         {
           sections?.map((section) => (
             <div>
-              <h3 class="mb-2 font-serif text-xl text-defy-rose">
+              <h3 class="mb-2 font-serif text-xl text-defy-rose-dark">
                 {section.heading}
               </h3>
-              <p class="leading-relaxed text-defy-charcoal/90">{section.text}</p>
+              <p class="leading-relaxed text-defy-charcoal">{section.text}</p>
             </div>
           ))
         }
         {closing && (
-          <p class="leading-relaxed text-defy-charcoal/90">{closing}</p>
+          <p class="leading-relaxed text-defy-charcoal">{closing}</p>
         )}
       </div>
 

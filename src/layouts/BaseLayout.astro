@@ -1,10 +1,11 @@
 ---
 import '../styles/global.css';
+import StagingBanner from '../components/StagingBanner.astro';
 import TopBar from '../components/TopBar.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import JsonLd from '../components/JsonLd.astro';
-import { site, withBase } from '../config/site';
+import { isStaging, site, withBase } from '../config/site';
 
 interface Props {
   title: string;
@@ -40,6 +41,7 @@ const canonicalUrl = new URL(pathSegment, siteRoot).href;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
     <meta name="generator" content={Astro.generator} />
+    {isStaging && <meta name="robots" content="noindex, nofollow" />}
     <link rel="canonical" href={canonicalUrl} />
     <link rel="icon" type="image/png" href={withBase('/favicon.png')} />
 
@@ -66,9 +68,11 @@ const canonicalUrl = new URL(pathSegment, siteRoot).href;
     <JsonLd />
   </head>
   <body class="min-h-screen flex flex-col">
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <StagingBanner />
     <TopBar />
     <Header currentPath={currentPath} />
-    <main class="flex-1">
+    <main id="main-content" class="flex-1" tabindex="-1">
       <slot />
     </main>
     <Footer />

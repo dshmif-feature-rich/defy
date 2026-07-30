@@ -31,14 +31,14 @@ const profilePhoto = getImage('dr-a-629.jpg');
         </div>
 
         <div>
-          <h2 class="font-serif text-3xl text-defy-rose">{meetJohn.name}</h2>
-          <p class="mt-2 text-sm font-medium tracking-wide text-defy-charcoal/70 uppercase">
+          <h2 class="font-serif text-3xl text-defy-rose-dark">{meetJohn.name}</h2>
+          <p class="mt-2 text-sm font-medium tracking-wide text-defy-charcoal uppercase">
             {meetJohn.role}
           </p>
           <div class="mt-6 space-y-6">
             {
               meetJohn.paragraphs.map((paragraph) => (
-                <p class="leading-relaxed text-defy-charcoal/90">{paragraph}</p>
+                <p class="leading-relaxed text-defy-charcoal">{paragraph}</p>
               ))
             }
           </div>

@@ -11,7 +11,6 @@ const { currentPath } = Astro.props;
 const logo = getImage('defy-logo.png');
 
 function normalizePath(p: string): string {
-  // Strip trailing slashes for robust matching (Astro paths sometimes have them, sometimes not)
   return (p || '/').replace(/\/+$/, '') || '/';
 }
 
@@ -33,10 +32,10 @@ function isItemActive(item: { href: string; children?: { href: string }[] }): bo
 
 <header class="sticky top-0 z-50 bg-white shadow-sm">
   <div class="container-defy flex items-center justify-between py-4">
-    <a href={withBase('/')} class="shrink-0">
+    <a href={withBase('/')} class="shrink-0 rounded-sm">
       <Image
         src={logo}
-        alt="DEFY Plastic and Reconstructive Surgery"
+        alt="DEFY Plastic and Reconstructive Surgery — Home"
         class="h-12 w-auto sm:h-14"
         widths={[200, 350]}
         sizes="200px"
@@ -44,14 +43,62 @@ function isItemActive(item: { href: string; children?: { href: string }[] }): bo
       />
     </a>
 
-    <!-- Desktop navigation: clean, light, modern (no heavy dark bar) -->
-    <nav class="hidden lg:block" aria-label="Main navigation">
+    <nav class="hidden lg:block" aria-label="Main">
       <div class="flex items-center gap-x-2">
         <ul class="flex items-center">
           {
             navItems.map((item) => (
               <li class="group relative">
-                {item.external ? (
+                {item.children ? (
+                  <>
+                    <a
+                      href={withBase(item.href)}
+                      class:list={[
+                        'nav-link inline-flex items-center gap-1',
+                        isItemActive(item) && 'nav-link-active',
+                      ]}
+                      aria-current={isPathActive(item.href) ? 'page' : undefined}
+                      aria-haspopup="true"
+                    >
+                      {item.label}
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="12"
+                        height="12"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="opacity-70"
+                        aria-hidden="true"
+                      >
+                        <path d="m6 9 6 6 6-6" />
+                      </svg>
+                    </a>
+                    {/* focus-within + hover so keyboard users can open submenus */}
+                    <ul
+                      class="invisible absolute left-0 top-full z-50 mt-1 min-w-[200px] rounded-lg border border-defy-warm bg-white py-1 opacity-0 shadow-xl transition-opacity group-focus-within:visible group-focus-within:opacity-100 group-hover:visible group-hover:opacity-100"
+                      role="list"
+                    >
+                      {item.children.map((child) => (
+                        <li>
+                          <a
+                            href={withBase(child.href)}
+                            class:list={[
+                              'block px-4 py-2.5 text-sm text-defy-charcoal transition-colors hover:bg-defy-warm hover:text-defy-rose-dark focus-visible:bg-defy-warm focus-visible:text-defy-rose-dark',
+                              isPathActive(child.href) && 'font-medium text-defy-rose-dark',
+                            ]}
+                            aria-current={isPathActive(child.href) ? 'page' : undefined}
+                          >
+                            {child.label}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </>
+                ) : item.external ? (
                   <a
                     href={withBase(item.href)}
                     target="_blank"
@@ -59,57 +106,50 @@ function isItemActive(item: { href: string; children?: { href: string }[] }): bo
                     class="nav-link inline-flex items-center gap-1"
                   >
                     {item.label}
-                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></svg>
+                    <span class="sr-only"> (opens in a new tab)</span>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="12"
+                      height="12"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      aria-hidden="true"
+                    >
+                      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                      <polyline points="15 3 21 3 21 9" />
+                      <line x1="10" x2="21" y1="14" y2="3" />
+                    </svg>
                   </a>
                 ) : (
                   <a
                     href={withBase(item.href)}
-                    class:list={[
-                      'nav-link',
-                      isItemActive(item) && 'nav-link-active',
-                    ]}
+                    class:list={['nav-link', isItemActive(item) && 'nav-link-active']}
+                    aria-current={isPathActive(item.href) ? 'page' : undefined}
                   >
                     {item.label}
                   </a>
-                )}
-
-                {item.children && (
-                  <ul class="absolute left-0 top-full mt-1 hidden min-w-[200px] rounded-lg border border-defy-warm bg-white py-1 shadow-xl group-hover:block z-50">
-                    {item.children.map((child) => (
-                      <li>
-                        <a
-                          href={withBase(child.href)}
-                          class:list={[
-                            'block px-4 py-2 text-sm text-defy-charcoal transition-colors hover:bg-defy-warm hover:text-defy-rose',
-                            isPathActive(child.href) && 'font-medium text-defy-rose',
-                          ]}
-                        >
-                          {child.label}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
                 )}
               </li>
             ))
           }
         </ul>
 
-        <!-- CTA buttons -->
-        <div class="ml-3 hidden lg:flex items-center gap-2">
-          <a
-            href={withBase('/contact-us')}
-            class="inline-flex items-center justify-center rounded-full bg-defy-rose px-5 py-1.5 text-xs font-semibold tracking-widest text-white shadow-sm transition hover:bg-defy-rose-dark focus:outline-none focus-visible:ring-2 focus-visible:ring-defy-rose/50"
-          >
+        <div class="ml-3 hidden items-center gap-2 lg:flex">
+          <a href={withBase('/contact-us')} class="btn-primary">
             BOOK CONSULTATION
           </a>
           <a
             href={externalLinks.skincareStore}
             target="_blank"
             rel="noopener noreferrer"
-            class="inline-flex items-center justify-center rounded-full border border-defy-rose bg-white px-5 py-1.5 text-xs font-semibold tracking-widest text-defy-rose shadow-sm transition hover:bg-defy-warm focus:outline-none focus-visible:ring-2 focus-visible:ring-defy-rose/50"
+            class="btn-secondary"
           >
             SKINCARE STORE
+            <span class="sr-only"> (opens in a new tab)</span>
           </a>
         </div>
       </div>
@@ -118,21 +158,53 @@ function isItemActive(item: { href: string; children?: { href: string }[] }): bo
     <button
       type="button"
       id="mobile-menu-btn"
-      class="inline-flex items-center justify-center rounded-md p-2 text-defy-charcoal hover:bg-defy-warm lg:hidden"
+      class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md p-2 text-defy-charcoal hover:bg-defy-warm lg:hidden"
       aria-expanded="false"
       aria-controls="mobile-menu"
-      aria-label="Toggle navigation menu"
+      aria-label="Open navigation menu"
     >
-      <svg id="menu-icon-open" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
-      <svg id="menu-icon-close" class="hidden" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+      <svg
+        id="menu-icon-open"
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <line x1="4" x2="20" y1="12" y2="12"></line>
+        <line x1="4" x2="20" y1="6" y2="6"></line>
+        <line x1="4" x2="20" y1="18" y2="18"></line>
+      </svg>
+      <svg
+        id="menu-icon-close"
+        class="hidden"
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <path d="M18 6 6 18"></path>
+        <path d="m6 6 12 12"></path>
+      </svg>
     </button>
   </div>
 
-  <!-- Mobile menu: clean light modern style -->
   <nav
     id="mobile-menu"
     class="hidden border-t border-defy-warm bg-white lg:hidden"
-    aria-label="Mobile navigation"
+    aria-label="Mobile"
+    hidden
   >
     <ul class="divide-y divide-defy-warm">
       {
@@ -143,33 +215,38 @@ function isItemActive(item: { href: string; children?: { href: string }[] }): bo
                 href={withBase(item.href)}
                 target="_blank"
                 rel="noopener noreferrer"
-                class="flex items-center justify-between px-5 py-3 text-sm font-medium text-defy-charcoal hover:text-defy-rose"
+                class="flex min-h-11 items-center justify-between px-5 py-3 text-sm font-medium text-defy-charcoal hover:text-defy-rose-dark"
               >
-                {item.label}
+                <span>
+                  {item.label}
+                  <span class="sr-only"> (opens in a new tab)</span>
+                </span>
                 <span aria-hidden="true">↗</span>
               </a>
             ) : (
               <a
                 href={withBase(item.href)}
                 class:list={[
-                  'block px-5 py-3 text-sm font-medium text-defy-charcoal hover:text-defy-rose',
-                  isItemActive(item) && 'text-defy-rose',
+                  'flex min-h-11 items-center px-5 py-3 text-sm font-medium text-defy-charcoal hover:text-defy-rose-dark',
+                  isItemActive(item) && 'text-defy-rose-dark',
                 ]}
+                aria-current={isPathActive(item.href) ? 'page' : undefined}
               >
                 {item.label}
               </a>
             )}
 
             {item.children && (
-              <ul class="bg-defy-warm/60 pl-5">
+              <ul class="bg-defy-warm/60 pl-5" aria-label={`${item.label} submenu`}>
                 {item.children.map((child) => (
                   <li>
                     <a
                       href={withBase(child.href)}
                       class:list={[
-                        'block px-5 py-2.5 text-sm text-defy-charcoal/90 hover:text-defy-rose',
-                        isPathActive(child.href) && 'font-medium text-defy-rose',
+                        'flex min-h-11 items-center px-5 py-2.5 text-sm text-defy-charcoal hover:text-defy-rose-dark',
+                        isPathActive(child.href) && 'font-medium text-defy-rose-dark',
                       ]}
+                      aria-current={isPathActive(child.href) ? 'page' : undefined}
                     >
                       {child.label}
                     </a>
@@ -181,21 +258,18 @@ function isItemActive(item: { href: string; children?: { href: string }[] }): bo
         ))
       }
 
-      <!-- Mobile CTAs -->
       <li class="flex flex-col gap-2 p-4">
-        <a
-          href={withBase('/contact-us')}
-          class="block w-full rounded-full bg-defy-rose py-2.5 text-center text-xs font-semibold tracking-[1.5px] text-white active:bg-defy-rose-dark"
-        >
+        <a href={withBase('/contact-us')} class="btn-primary w-full py-2.5">
           BOOK CONSULTATION
         </a>
         <a
           href={externalLinks.skincareStore}
           target="_blank"
           rel="noopener noreferrer"
-          class="block w-full rounded-full border border-defy-rose bg-white py-2.5 text-center text-xs font-semibold tracking-[1.5px] text-defy-rose active:bg-defy-warm"
+          class="btn-secondary w-full py-2.5"
         >
           SKINCARE STORE
+          <span class="sr-only"> (opens in a new tab)</span>
         </a>
       </li>
     </ul>
@@ -208,11 +282,29 @@ function isItemActive(item: { href: string; children?: { href: string }[] }): bo
   const iconOpen = document.getElementById('menu-icon-open');
   const iconClose = document.getElementById('menu-icon-close');
 
+  function setMenuOpen(open: boolean) {
+    if (!menu || !btn) return;
+    menu.classList.toggle('hidden', !open);
+    menu.hidden = !open;
+    iconOpen?.classList.toggle('hidden', open);
+    iconClose?.classList.toggle('hidden', !open);
+    btn.setAttribute('aria-expanded', String(open));
+    btn.setAttribute('aria-label', open ? 'Close navigation menu' : 'Open navigation menu');
+    document.body.classList.toggle('overflow-hidden', open);
+  }
+
   btn?.addEventListener('click', () => {
-    const isOpen = !menu?.classList.contains('hidden');
-    menu?.classList.toggle('hidden', isOpen);
-    iconOpen?.classList.toggle('hidden', !isOpen);
-    iconClose?.classList.toggle('hidden', isOpen);
-    btn.setAttribute('aria-expanded', String(!isOpen));
+    const isOpen = btn.getAttribute('aria-expanded') === 'true';
+    setMenuOpen(!isOpen);
   });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && btn?.getAttribute('aria-expanded') === 'true') {
+      setMenuOpen(false);
+      btn.focus();
+    }
+  });
+
+  // Ensure closed on load (hidden attribute + class)
+  setMenuOpen(false);
 </script>

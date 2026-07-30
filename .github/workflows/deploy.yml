@@ -1,4 +1,8 @@
-name: Deploy to GitHub Pages
+name: Deploy production (GitHub Pages)
+
+# Production: www.defyprs.com
+# Payment portal: only enabled when production environment secrets are set.
+# Office sandbox testing uses the separate "Deploy staging" workflow (S3 + CloudFront).
 
 # Requires GitHub Pages source set to "GitHub Actions" in repo Settings → Pages
 # before the first deploy will succeed.
@@ -20,6 +24,7 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    environment: production
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -35,6 +40,11 @@ jobs:
           # Apex defyprs.com 301s to www; use www for canonicals.
           SITE_URL: https://www.defyprs.com
           BASE_PATH: /
+          PUBLIC_SITE_ENV: production
+          # Optional: set these on the "production" GitHub Environment only when going live.
+          # Leave unset so /pay shows the contact-office fallback until cutover.
+          PUBLIC_PAY_API_BASE: ${{ secrets.PUBLIC_PAY_API_BASE }}
+          PUBLIC_PAY_API_KEY: ${{ secrets.PUBLIC_PAY_API_KEY }}
 
   deploy:
     needs: build

@@ -15,6 +15,10 @@ export function withBase(path: string): string {
   return (b + p).replace(/\/$/, '');
 }
 
+/** Build-time env: "staging" | "production" | unset (local defaults to non-staging). */
+export const siteEnv = (import.meta.env.PUBLIC_SITE_ENV || 'production').toLowerCase();
+export const isStaging = siteEnv === 'staging';
+
 export const site = {
   name: 'DEFY PRS',
   tagline: 'Plastic, Reconstructive & Aesthetic Surgery Practice',
@@ -63,6 +67,7 @@ export const navItems: NavItem[] = [
   },
   { label: 'Services', href: '/services' },
   { label: 'Contact Us', href: '/contact-us' },
+  { label: 'Pay Invoice', href: '/pay' },
   {
     label: 'Patient Portal',
     href: externalLinks.patientPortal,
@@ -78,6 +83,7 @@ export const footerGuideLinks = [
   { label: 'Cancer', href: '/cancer' },
   { label: 'Contact Us', href: '/contact-us' },
   { label: 'Gravity', href: '/gravity' },
+  { label: 'Pay Invoice', href: '/pay' },
   { label: 'Patient Portal', href: externalLinks.patientPortal, external: true },
   { label: 'Services', href: '/services' },
   { label: 'CareCredit', href: externalLinks.careCredit, external: true },

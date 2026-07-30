@@ -14,11 +14,14 @@ import { site } from '../config/site';
 >
   <Hero />
 
-  <section class="py-16 sm:py-20">
+  <section class="py-16 sm:py-20" aria-labelledby="home-intro-heading">
     <div class="container-defy max-w-4xl">
+      <h1 id="home-intro-heading" class="sr-only">
+        DEFY Plastic and Reconstructive Surgery in San Diego
+      </h1>
       {
         home.intro.map((paragraph) => (
-          <p class="mb-6 text-lg leading-relaxed text-defy-charcoal/90 last:mb-0">
+          <p class="mb-6 text-lg leading-relaxed text-defy-charcoal last:mb-0">
             {paragraph}
           </p>
         ))

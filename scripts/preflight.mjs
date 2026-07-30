@@ -11,6 +11,8 @@ const requiredPages = [
   'gravity/index.html',
   'services/index.html',
   'contact-us/index.html',
+  'pay/index.html',
+  'pay/success/index.html',
 ];
 const legacyRedirects = [
   'about-us.html',
