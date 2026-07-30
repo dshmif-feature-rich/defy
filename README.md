@@ -15,28 +15,26 @@ Open [http://localhost:4321](http://localhost:4321).
 
 Patients look up a **PayPal invoice** by number + email, then complete payment on PayPal’s hosted invoice page. Staff continue creating invoices in PayPal Business.
 
-| Environment | Host | PayPal | How |
-|-------------|------|--------|-----|
-| **Staging (office test)** | Dedicated CloudFront URL | **Sandbox** | Branch `staging` → [Deploy staging](./.github/workflows/deploy-staging.yml) |
-| **Production** | `www.defyprs.com` (GitHub Pages) | Live (when ready) | Branch `main` → Deploy production |
+| Environment | Host | Pay portal | PayPal |
+|-------------|------|------------|--------|
+| **Production** | `www.defyprs.com` | **Off** until go-live | Live (when enabled) |
+| **Staging** | CloudFront staging host | **On** | Sandbox |
+| **Local** | localhost | Only if you set the flag | Sandbox |
 
-**Do not** point production at sandbox. Staging setup: [`infra/staging-host/README.md`](./infra/staging-host/README.md).
+`/pay` is gated by `PUBLIC_PAY_PORTAL_ENABLED=true`. When off (production default): no nav/footer link, not in sitemap, and `dist/pay` is removed after build.
 
-1. Deploy sandbox **defy-pay-api** (sibling repo) and include the staging site origin in CORS.
-2. Deploy staging host stack + configure GitHub Environment `staging` (see staging-host README).
-3. Push `staging` branch (or run the workflow manually). Share the **StagingSiteUrl** with the office.
-4. When going live: deploy **live** pay-api, set `PUBLIC_PAY_*` on GitHub Environment `production`, redeploy `main`.
+Staging setup: [`infra/staging-host/README.md`](./infra/staging-host/README.md).
 
-Local:
+**Go-live checklist:** deploy live pay-api → set `PUBLIC_PAY_PORTAL_ENABLED=true` plus API secrets on GitHub Environment `production` → redeploy `main`.
+
+Local (optional):
 
 ```bash
-# .env — sandbox API for local /pay testing
+PUBLIC_PAY_PORTAL_ENABLED=true
 PUBLIC_SITE_ENV=staging
 PUBLIC_PAY_API_BASE=https://d111111abcdef8.cloudfront.net
 PUBLIC_PAY_API_KEY=same-value-as-PayApiKey-in-SAM
 ```
-
-Without pay vars, `/pay` still builds and shows a contact-office fallback.
 
 ## Build
 

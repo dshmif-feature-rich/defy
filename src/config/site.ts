@@ -19,6 +19,12 @@ export function withBase(path: string): string {
 export const siteEnv = (import.meta.env.PUBLIC_SITE_ENV || 'production').toLowerCase();
 export const isStaging = siteEnv === 'staging';
 
+/**
+ * Payment portal (/pay) is off by default so production does not expose it.
+ * Set PUBLIC_PAY_PORTAL_ENABLED=true for local/staging testing or go-live.
+ */
+export const payPortalEnabled = import.meta.env.PUBLIC_PAY_PORTAL_ENABLED === 'true';
+
 export const site = {
   name: 'DEFY PRS',
   tagline: 'Plastic, Reconstructive & Aesthetic Surgery Practice',
@@ -67,7 +73,9 @@ export const navItems: NavItem[] = [
   },
   { label: 'Services', href: '/services' },
   { label: 'Contact Us', href: '/contact-us' },
-  { label: 'Pay Invoice', href: '/pay' },
+  ...(payPortalEnabled
+    ? ([{ label: 'Pay Invoice', href: '/pay' }] satisfies NavItem[])
+    : []),
   {
     label: 'Patient Portal',
     href: externalLinks.patientPortal,
@@ -83,7 +91,9 @@ export const footerGuideLinks = [
   { label: 'Cancer', href: '/cancer' },
   { label: 'Contact Us', href: '/contact-us' },
   { label: 'Gravity', href: '/gravity' },
-  { label: 'Pay Invoice', href: '/pay' },
+  ...(payPortalEnabled
+    ? ([{ label: 'Pay Invoice', href: '/pay' }] as const)
+    : []),
   { label: 'Patient Portal', href: externalLinks.patientPortal, external: true },
   { label: 'Services', href: '/services' },
   { label: 'CareCredit', href: externalLinks.careCredit, external: true },

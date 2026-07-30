@@ -1,8 +1,9 @@
 name: Deploy production (GitHub Pages)
 
 # Production: www.defyprs.com
-# Payment portal: only enabled when production environment secrets are set.
-# Office sandbox testing uses the separate "Deploy staging" workflow (S3 + CloudFront).
+# Payment portal (/pay) is OFF by default (no nav link, not in sitemap, HTML stripped).
+# Set PUBLIC_PAY_PORTAL_ENABLED=true + pay API secrets on Environment "production" only at go-live.
+# Office sandbox testing: separate "Deploy staging" workflow (S3 + CloudFront).
 
 # Requires GitHub Pages source set to "GitHub Actions" in repo Settings → Pages
 # before the first deploy will succeed.
@@ -41,8 +42,8 @@ jobs:
           SITE_URL: https://www.defyprs.com
           BASE_PATH: /
           PUBLIC_SITE_ENV: production
-          # Optional: set these on the "production" GitHub Environment only when going live.
-          # Leave unset so /pay shows the contact-office fallback until cutover.
+          # Leave false/unset until ready to launch the portal on www.defyprs.com
+          PUBLIC_PAY_PORTAL_ENABLED: 'false'
           PUBLIC_PAY_API_BASE: ${{ secrets.PUBLIC_PAY_API_BASE }}
           PUBLIC_PAY_API_KEY: ${{ secrets.PUBLIC_PAY_API_KEY }}
 

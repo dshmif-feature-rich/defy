@@ -7,7 +7,7 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "astro build && node scripts/postbuild-pay-gate.mjs",
     "preview": "astro preview",
     "preflight": "npm run build && node scripts/preflight.mjs",
     "astro": "astro"

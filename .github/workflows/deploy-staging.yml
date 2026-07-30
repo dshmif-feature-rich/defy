@@ -60,6 +60,8 @@ jobs:
           SITE_URL: ${{ vars.STAGING_SITE_URL }}
           BASE_PATH: /
           PUBLIC_SITE_ENV: staging
+          # Staging intentionally enables the pay portal for office sandbox testing
+          PUBLIC_PAY_PORTAL_ENABLED: 'true'
           PUBLIC_PAY_API_BASE: ${{ secrets.PUBLIC_PAY_API_BASE }}
           PUBLIC_PAY_API_KEY: ${{ secrets.PUBLIC_PAY_API_KEY }}
         run: npm run build

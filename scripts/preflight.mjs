@@ -2,6 +2,8 @@ import { readdir, readFile, stat } from 'node:fs/promises';
 import { join } from 'node:path';
 
 const dist = new URL('../dist', import.meta.url).pathname;
+const payPortalEnabled = process.env.PUBLIC_PAY_PORTAL_ENABLED === 'true';
+
 const requiredPages = [
   'index.html',
   'about-us/index.html',
@@ -11,8 +13,9 @@ const requiredPages = [
   'gravity/index.html',
   'services/index.html',
   'contact-us/index.html',
-  'pay/index.html',
-  'pay/success/index.html',
+  ...(payPortalEnabled
+    ? ['pay/index.html', 'pay/success/index.html']
+    : []),
 ];
 const legacyRedirects = [
   'about-us.html',
@@ -50,6 +53,16 @@ async function checkHtml(rel, checks) {
 
 console.log('=== Page files ===');
 for (const page of requiredPages) await checkExists(page);
+
+if (!payPortalEnabled) {
+  try {
+    await stat(join(dist, 'pay/index.html'));
+    console.error('✗ pay portal is disabled but dist/pay still exists');
+    failures++;
+  } catch {
+    console.log('✓ pay portal not exposed (PUBLIC_PAY_PORTAL_ENABLED unset)');
+  }
+}
 
 console.log('\n=== Legacy redirects ===');
 for (const page of legacyRedirects) await checkExists(page);
