@@ -31,7 +31,8 @@ function isItemActive(item: { href: string; children?: { href: string }[] }): bo
 ---
 
 <header class="sticky top-0 z-50 bg-white shadow-sm">
-  <div class="container-defy flex items-center justify-between py-4">
+  <!-- Wider than page body (max-w-6xl) so logo + nav + CTAs stay on one line -->
+  <div class="mx-auto flex w-full max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
     <a href={withBase('/')} class="shrink-0 rounded-sm">
       <Image
         src={logo}
@@ -43,9 +44,9 @@ function isItemActive(item: { href: string; children?: { href: string }[] }): bo
       />
     </a>
 
-    <nav class="hidden lg:block" aria-label="Main">
-      <div class="flex items-center gap-x-2">
-        <ul class="flex items-center">
+    <nav class="hidden min-w-0 lg:block" aria-label="Main">
+      <div class="flex flex-nowrap items-center gap-x-1 xl:gap-x-2">
+        <ul class="flex flex-nowrap items-center">
           {
             navItems.map((item) => (
               <li class="group relative">
@@ -138,15 +139,15 @@ function isItemActive(item: { href: string; children?: { href: string }[] }): bo
           }
         </ul>
 
-        <div class="ml-3 hidden items-center gap-2 lg:flex">
-          <a href={withBase('/contact-us')} class="btn-primary">
+        <div class="ml-2 hidden shrink-0 items-center gap-2 xl:ml-3 lg:flex">
+          <a href={withBase('/contact-us')} class="btn-primary whitespace-nowrap">
             BOOK CONSULTATION
           </a>
           <a
             href={externalLinks.skincareStore}
             target="_blank"
             rel="noopener noreferrer"
-            class="btn-secondary"
+            class="btn-secondary whitespace-nowrap"
           >
             SKINCARE STORE
             <span class="sr-only"> (opens in a new tab)</span>

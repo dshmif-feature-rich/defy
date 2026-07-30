@@ -114,9 +114,9 @@
     @apply inline-flex items-center justify-center rounded-full border-2 border-defy-rose-dark bg-white px-5 py-2 text-xs font-semibold tracking-widest text-defy-rose-dark shadow-sm transition hover:bg-defy-warm focus:outline-none focus-visible:ring-2 focus-visible:ring-defy-rose-dark/60 focus-visible:ring-offset-2;
   }
 
-  /* Modern, elegant navigation */
+  /* Modern, elegant navigation — nowrap keeps multi-word labels (e.g. Patient Portal) on one line */
   .nav-link {
-    @apply px-3 py-2 text-[13px] font-medium tracking-[0.75px] text-defy-charcoal transition-colors duration-200;
+    @apply whitespace-nowrap px-2.5 py-2 text-[13px] font-medium tracking-[0.75px] text-defy-charcoal transition-colors duration-200 xl:px-3;
   }
 
   .nav-link:hover,
