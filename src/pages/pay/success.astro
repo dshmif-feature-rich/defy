@@ -1,0 +1,86 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SubBanner from '../../components/SubBanner.astro';
+import pay from '../../content/pages/pay.json';
+import { site, withBase } from '../../config/site';
+import { getImage } from '../../lib/images';
+
+const bannerImage = getImage(pay.banner);
+const payPath = withBase('/pay');
+---
+
+<BaseLayout
+  title="Payment"
+  description="Thank you for paying your DEFY invoice."
+  currentPath="/pay/success"
+>
+  <SubBanner
+    title="Thank you"
+    image={bannerImage}
+    breadcrumbs={[
+      { label: 'Home', href: '/' },
+      { label: 'Pay Invoice', href: '/pay' },
+      { label: 'Thank you' },
+    ]}
+  />
+
+  <section class="py-16 sm:py-20" aria-labelledby="payment-complete-heading">
+    <div class="container-defy">
+      <div class="mx-auto max-w-lg text-center">
+        <h2
+          id="payment-complete-heading"
+          class="font-serif text-3xl text-defy-rose-dark"
+        >
+          Payment complete
+        </h2>
+        <p class="mt-4 leading-relaxed text-defy-charcoal">
+          If you finished checkout on PayPal, your invoice payment is processing.
+          You should also receive a confirmation from PayPal.
+        </p>
+        <p
+          id="success-detail"
+          class="mt-3 hidden text-sm text-defy-charcoal"
+          role="status"
+        ></p>
+        <div class="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+          <a href={payPath} class="btn-secondary min-h-11 px-6 py-2.5 text-sm">
+            Pay another invoice
+          </a>
+          <a href={withBase('/')} class="btn-primary min-h-11 px-6 py-2.5 text-sm">
+            Back to home
+          </a>
+        </div>
+        <p class="mt-10 text-sm text-defy-charcoal">
+          Need a receipt or have questions? Call{' '}
+          <a
+            href={`tel:${site.phoneTel}`}
+            class="font-semibold text-defy-rose-dark underline-offset-2 hover:underline"
+          >
+            {site.phone}
+          </a>
+          .
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  try {
+    const raw = sessionStorage.getItem('defyPayLastInvoice');
+    if (raw) {
+      const data = JSON.parse(raw);
+      const el = document.getElementById('success-detail');
+      if (el && data?.invoiceNumber) {
+        const amount =
+          data.amount?.value != null
+            ? ` · ${data.amount.currency || 'USD'} ${data.amount.value}`
+            : '';
+        el.textContent = `Invoice ${data.invoiceNumber}${amount}`;
+        el.classList.remove('hidden');
+      }
+    }
+  } catch {
+    /* ignore */
+  }
+</script>

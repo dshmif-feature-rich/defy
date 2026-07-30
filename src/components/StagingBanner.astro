@@ -1,0 +1,19 @@
+---
+import { isStaging } from '../config/site';
+---
+
+{
+  isStaging && (
+    <div
+      class="sticky top-0 z-[60] bg-amber-500 px-4 py-2.5 text-center text-sm font-semibold tracking-wide text-amber-950 shadow"
+      role="status"
+    >
+      <span class="sr-only">Warning: </span>
+      STAGING — PayPal sandbox only. Not the live patient site.
+      <span class="hidden font-normal sm:inline">
+        {' '}
+        (www.defyprs.com is production)
+      </span>
+    </div>
+  )
+}

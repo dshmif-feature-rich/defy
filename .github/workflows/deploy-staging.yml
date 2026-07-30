@@ -1,0 +1,106 @@
+name: Deploy staging
+
+# Dedicated office-test host (S3 + CloudFront), PayPal sandbox API.
+# Does not touch www.defyprs.com / GitHub Pages production.
+
+on:
+  push:
+    branches: [staging]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: staging-site
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: staging
+      url: ${{ vars.STAGING_SITE_URL }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Require staging config
+        env:
+          STAGING_SITE_URL: ${{ vars.STAGING_SITE_URL }}
+          STAGING_S3_BUCKET: ${{ vars.STAGING_S3_BUCKET }}
+          STAGING_CLOUDFRONT_DISTRIBUTION_ID: ${{ vars.STAGING_CLOUDFRONT_DISTRIBUTION_ID }}
+          PUBLIC_PAY_API_BASE: ${{ secrets.PUBLIC_PAY_API_BASE }}
+          PUBLIC_PAY_API_KEY: ${{ secrets.PUBLIC_PAY_API_KEY }}
+        run: |
+          missing=0
+          for v in STAGING_SITE_URL STAGING_S3_BUCKET STAGING_CLOUDFRONT_DISTRIBUTION_ID PUBLIC_PAY_API_BASE PUBLIC_PAY_API_KEY; do
+            if [ -z "${!v}" ]; then
+              echo "::error::Missing staging environment config: $v"
+              missing=1
+            fi
+          done
+          if [ "$missing" -ne 0 ]; then
+            echo "Configure the GitHub Environment \"staging\" (see infra/staging-host/README.md)."
+            exit 1
+          fi
+
+      - name: Build staging site
+        env:
+          SITE_URL: ${{ vars.STAGING_SITE_URL }}
+          BASE_PATH: /
+          PUBLIC_SITE_ENV: staging
+          PUBLIC_PAY_API_BASE: ${{ secrets.PUBLIC_PAY_API_BASE }}
+          PUBLIC_PAY_API_KEY: ${{ secrets.PUBLIC_PAY_API_KEY }}
+        run: npm run build
+
+      - name: Staging robots.txt (noindex crawl)
+        run: |
+          printf 'User-agent: *\nDisallow: /\n' > dist/robots.txt
+          # Avoid shipping production CNAME on the staging host
+          rm -f dist/CNAME
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v5
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ vars.AWS_REGION || 'us-east-1' }}
+
+      - name: Sync to S3
+        env:
+          BUCKET: ${{ vars.STAGING_S3_BUCKET }}
+        run: |
+          aws s3 sync dist/ "s3://${BUCKET}/" --delete \
+            --cache-control "public,max-age=31536000,immutable" \
+            --exclude "*.html" \
+            --exclude "sitemap*.xml" \
+            --exclude "robots.txt" \
+            --exclude "CNAME"
+          aws s3 sync dist/ "s3://${BUCKET}/" \
+            --cache-control "public,max-age=60,must-revalidate" \
+            --exclude "*" \
+            --include "*.html" \
+            --include "sitemap*.xml" \
+            --include "robots.txt"
+
+      - name: Invalidate CloudFront
+        env:
+          DIST_ID: ${{ vars.STAGING_CLOUDFRONT_DISTRIBUTION_ID }}
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id "$DIST_ID" \
+            --paths "/*"
+
+      - name: Staging URL
+        run: echo "Office test site → ${{ vars.STAGING_SITE_URL }}"
