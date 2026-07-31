@@ -1,7 +1,7 @@
-name: Deploy staging
+name: Deploy staging site
 
-# Dedicated office-test host (S3 + CloudFront), PayPal sandbox API.
-# Does not touch www.defyprs.com / GitHub Pages production.
+# Builds the Astro site with /pay enabled and deploys to the staging S3 + CloudFront host.
+# Discovers host + sandbox API URL from AWS SSM (written by infra / pay-api workflows).
 
 on:
   push:
@@ -19,12 +19,67 @@ concurrency:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    environment:
-      name: staging
-      url: ${{ vars.STAGING_SITE_URL }}
+    environment: staging
+    env:
+      AWS_REGION: ${{ vars.AWS_REGION || 'us-east-1' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v6
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v5
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Load staging config from SSM
+        id: cfg
+        env:
+          PUBLIC_PAY_API_KEY: ${{ secrets.PUBLIC_PAY_API_KEY }}
+          OVERRIDE_SITE_URL: ${{ vars.STAGING_SITE_URL }}
+          OVERRIDE_BUCKET: ${{ vars.STAGING_S3_BUCKET }}
+          OVERRIDE_DIST_ID: ${{ vars.STAGING_CLOUDFRONT_DISTRIBUTION_ID }}
+          OVERRIDE_API_BASE: ${{ secrets.PUBLIC_PAY_API_BASE }}
+        run: |
+          set -euo pipefail
+          getp() {
+            aws ssm get-parameter --name "$1" --query 'Parameter.Value' --output text 2>/dev/null || true
+          }
+
+          # Prefer optional GitHub Environment overrides; else SSM (written by infra / pay-api workflows)
+          SITE_URL="${OVERRIDE_SITE_URL:-}"
+          BUCKET="${OVERRIDE_BUCKET:-}"
+          DIST_ID="${OVERRIDE_DIST_ID:-}"
+          API_BASE="${OVERRIDE_API_BASE:-}"
+
+          [ -n "$SITE_URL" ] || SITE_URL=$(getp /defy/staging/site-url)
+          [ -n "$BUCKET" ] || BUCKET=$(getp /defy/staging/s3-bucket)
+          [ -n "$DIST_ID" ] || DIST_ID=$(getp /defy/staging/cloudfront-distribution-id)
+          [ -n "$API_BASE" ] || API_BASE=$(getp /defy/sandbox/pay-api/base-url)
+
+          missing=0
+          for pair in "SITE_URL:$SITE_URL" "BUCKET:$BUCKET" "DIST_ID:$DIST_ID" "API_BASE:$API_BASE" "PUBLIC_PAY_API_KEY:$PUBLIC_PAY_API_KEY"; do
+            key=${pair%%:*}
+            val=${pair#*:}
+            if [ -z "$val" ] || [ "$val" = "None" ]; then
+              echo "::error::Missing $key — run Deploy staging infra + pay-api sandbox, and set PUBLIC_PAY_API_KEY on Environment staging"
+              missing=1
+            fi
+          done
+          if [ "$missing" -ne 0 ]; then
+            exit 1
+          fi
+
+          {
+            echo "site_url=$SITE_URL"
+            echo "bucket=$BUCKET"
+            echo "dist_id=$DIST_ID"
+            echo "api_base=$API_BASE"
+          } >> "$GITHUB_OUTPUT"
+
+          echo "Staging site: $SITE_URL"
+          echo "Pay API: $API_BASE"
 
       - name: Setup Node
         uses: actions/setup-node@v5
@@ -35,53 +90,24 @@ jobs:
       - name: Install
         run: npm ci
 
-      - name: Require staging config
-        env:
-          STAGING_SITE_URL: ${{ vars.STAGING_SITE_URL }}
-          STAGING_S3_BUCKET: ${{ vars.STAGING_S3_BUCKET }}
-          STAGING_CLOUDFRONT_DISTRIBUTION_ID: ${{ vars.STAGING_CLOUDFRONT_DISTRIBUTION_ID }}
-          PUBLIC_PAY_API_BASE: ${{ secrets.PUBLIC_PAY_API_BASE }}
-          PUBLIC_PAY_API_KEY: ${{ secrets.PUBLIC_PAY_API_KEY }}
-        run: |
-          missing=0
-          for v in STAGING_SITE_URL STAGING_S3_BUCKET STAGING_CLOUDFRONT_DISTRIBUTION_ID PUBLIC_PAY_API_BASE PUBLIC_PAY_API_KEY; do
-            if [ -z "${!v}" ]; then
-              echo "::error::Missing staging environment config: $v"
-              missing=1
-            fi
-          done
-          if [ "$missing" -ne 0 ]; then
-            echo "Configure the GitHub Environment \"staging\" (see infra/staging-host/README.md)."
-            exit 1
-          fi
-
       - name: Build staging site
         env:
-          SITE_URL: ${{ vars.STAGING_SITE_URL }}
+          SITE_URL: ${{ steps.cfg.outputs.site_url }}
           BASE_PATH: /
           PUBLIC_SITE_ENV: staging
-          # Staging intentionally enables the pay portal for office sandbox testing
           PUBLIC_PAY_PORTAL_ENABLED: 'true'
-          PUBLIC_PAY_API_BASE: ${{ secrets.PUBLIC_PAY_API_BASE }}
+          PUBLIC_PAY_API_BASE: ${{ steps.cfg.outputs.api_base }}
           PUBLIC_PAY_API_KEY: ${{ secrets.PUBLIC_PAY_API_KEY }}
         run: npm run build
 
       - name: Staging robots.txt (noindex crawl)
         run: |
           printf 'User-agent: *\nDisallow: /\n' > dist/robots.txt
-          # Avoid shipping production CNAME on the staging host
           rm -f dist/CNAME
-
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v5
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ vars.AWS_REGION || 'us-east-1' }}
 
       - name: Sync to S3
         env:
-          BUCKET: ${{ vars.STAGING_S3_BUCKET }}
+          BUCKET: ${{ steps.cfg.outputs.bucket }}
         run: |
           aws s3 sync dist/ "s3://${BUCKET}/" --delete \
             --cache-control "public,max-age=31536000,immutable" \
@@ -98,11 +124,20 @@ jobs:
 
       - name: Invalidate CloudFront
         env:
-          DIST_ID: ${{ vars.STAGING_CLOUDFRONT_DISTRIBUTION_ID }}
+          DIST_ID: ${{ steps.cfg.outputs.dist_id }}
         run: |
           aws cloudfront create-invalidation \
             --distribution-id "$DIST_ID" \
             --paths "/*"
 
-      - name: Staging URL
-        run: echo "Office test site → ${{ vars.STAGING_SITE_URL }}"
+      - name: Summary
+        env:
+          SITE_URL: ${{ steps.cfg.outputs.site_url }}
+        run: |
+          {
+            echo "## Staging site deployed"
+            echo ""
+            echo "**Office URL:** $SITE_URL"
+            echo ""
+            echo "Yellow STAGING banner + /pay enabled (PayPal sandbox)."
+          } >> "$GITHUB_STEP_SUMMARY"

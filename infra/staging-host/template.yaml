@@ -117,6 +117,31 @@ Resources:
               StringEquals:
                 AWS:SourceArn: !Sub 'arn:aws:cloudfront::${AWS::AccountId}:distribution/${StagingDistribution}'
 
+  # Discovered by GitHub Actions (no need to copy outputs into GitHub vars by hand)
+  ParamSiteUrl:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name: /defy/staging/site-url
+      Type: String
+      Value: !Sub 'https://${StagingDistribution.DomainName}'
+      Description: DEFY staging site URL for CI and pay-api CORS
+
+  ParamBucket:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name: /defy/staging/s3-bucket
+      Type: String
+      Value: !Ref StagingBucket
+      Description: DEFY staging S3 bucket name
+
+  ParamDistributionId:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name: /defy/staging/cloudfront-distribution-id
+      Type: String
+      Value: !Ref StagingDistribution
+      Description: DEFY staging CloudFront distribution ID
+
 Outputs:
   StagingBucketName:
     Description: S3 bucket for GitHub Actions aws s3 sync
@@ -130,3 +155,6 @@ Outputs:
   StagingDomainName:
     Description: CloudFront domain name
     Value: !GetAtt StagingDistribution.DomainName
+  SsmPrefix:
+    Description: SSM parameter path prefix
+    Value: /defy/staging

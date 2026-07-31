@@ -23,7 +23,7 @@ Patients look up a **PayPal invoice** by number + email, then complete payment o
 
 `/pay` is gated by `PUBLIC_PAY_PORTAL_ENABLED=true`. When off (production default): no nav/footer link, not in sitemap, and `dist/pay` is removed after build.
 
-Staging setup: [`infra/staging-host/README.md`](./infra/staging-host/README.md).
+**Staging via GitHub Actions:** see **[`docs/STAGING.md`](./docs/STAGING.md)** (what you configure once vs what workflows deploy).
 
 **Go-live checklist:** deploy live pay-api → set `PUBLIC_PAY_PORTAL_ENABLED=true` plus API secrets on GitHub Environment `production` → redeploy `main`.
 

@@ -1,0 +1,80 @@
+name: Deploy staging infra
+
+# Deploys S3 + CloudFront for the office staging site.
+# Writes /defy/staging/* to SSM so the site deploy workflow can discover config.
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, staging]
+    paths:
+      - 'infra/staging-host/**'
+      - '.github/workflows/deploy-staging-infra.yml'
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: staging-infra
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: staging
+    env:
+      AWS_REGION: ${{ vars.AWS_REGION || 'us-east-1' }}
+      STACK_NAME: defy-staging-host
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v5
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Deploy CloudFormation stack
+        run: |
+          aws cloudformation deploy \
+            --template-file infra/staging-host/template.yaml \
+            --stack-name "$STACK_NAME" \
+            --parameter-overrides ProjectName=defy-staging \
+            --no-fail-on-empty-changeset \
+            --capabilities CAPABILITY_NAMED_IAM
+
+      - name: Publish outputs
+        id: out
+        run: |
+          SITE_URL=$(aws cloudformation describe-stacks \
+            --stack-name "$STACK_NAME" \
+            --query "Stacks[0].Outputs[?OutputKey=='StagingSiteUrl'].OutputValue" \
+            --output text)
+          BUCKET=$(aws cloudformation describe-stacks \
+            --stack-name "$STACK_NAME" \
+            --query "Stacks[0].Outputs[?OutputKey=='StagingBucketName'].OutputValue" \
+            --output text)
+          DIST_ID=$(aws cloudformation describe-stacks \
+            --stack-name "$STACK_NAME" \
+            --query "Stacks[0].Outputs[?OutputKey=='StagingDistributionId'].OutputValue" \
+            --output text)
+
+          echo "site_url=$SITE_URL" >> "$GITHUB_OUTPUT"
+          echo "bucket=$BUCKET" >> "$GITHUB_OUTPUT"
+          echo "dist_id=$DIST_ID" >> "$GITHUB_OUTPUT"
+
+          {
+            echo "## Staging infra deployed"
+            echo ""
+            echo "| Key | Value |"
+            echo "|-----|-------|"
+            echo "| **Office URL** | $SITE_URL |"
+            echo "| S3 bucket | \`$BUCKET\` |"
+            echo "| CloudFront ID | \`$DIST_ID\` |"
+            echo "| SSM prefix | \`/defy/staging/*\` |"
+            echo ""
+            echo "Site deploy and pay-api CORS read these from **SSM** automatically."
+          } >> "$GITHUB_STEP_SUMMARY"
